@@ -15,10 +15,12 @@ app.listen(80, ()=>{
 app.use(bodyParser.urlencoded({
     extended:false //不使用querystring的查询字符串
 }))
-
+app.use(bodyParser.json())
 
 app.use('/user', user)
-app.use('/login', login)
+//app.use('/login', login)
+
+
 
 app.get('/', (req, res)=>{
     res.redirect('/index.html')
