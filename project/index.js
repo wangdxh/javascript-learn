@@ -1,7 +1,6 @@
 const express = require('express')
 const user = require('./router/user.js')
 const login = require('./router/login.js')
-
 const bodyParser = require('body-parser')
 
 
