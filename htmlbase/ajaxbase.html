@@ -1,0 +1,81 @@
+
+<!--
+  url:
+  <scheme> ://<user>:<pwd>@<host>:<port>/<path>/<params>?<query>#<frag>
+
+    dom bom 操作 
+    dom document object model 文档对象模型
+        让js动态的操作页面的元素
+    bom Browser object model 浏览器对象模型
+        让js动态的操作浏览器
+    
+    使用js获取页面上的某个元素
+        为元素增加一个id属性
+        <div id="d1">text</div>
+        在js中，允许通过元素的id获取
+        document.getElementById("d1");
+    DOM 获取和设置某元素的内容
+        修改和获取 innerHTML 即可
+        表单控件的内容使用 dom的value属性来获取或者设置
+    html元素事件
+        onclick 单击事件
+        文本框密码框获取焦点事件 ：onfocus onblur
+
+AJAX Asynchronous Javascript And Xml
+    本质是使用js提供的一步对象XMLHttpRequest，异步的向服务器发送请求
+    并接受响应的数据
+    可以实现无刷新的来更改页面中布局内容
+    创建ajax对象，var ajax = new XMLHttpRequest()
+        windows.XMLHttpRequest null 表示浏览器不支持标准创建
+    绑定监听事件，
+        readyState 表示异步对象的请求状态 0-4
+            0:请求尚未初始化
+            1:已经打开到服务器的连接，正在发送请求
+            2:接受响应头
+            3:接受响应数据
+            4:接受相应数据成功了 所有的响应都已经完成
+        status 属性
+            表示服务器的响应状态
+            200 表示服务器已经正确处理请求
+        onreadystatechange
+            当xhr对象的readystate属性值发生改变是，要自动激发的操作
+            xhr.onreadystatechange=function(){
+                if(xhr.readystate==4 && xhr.status==200){
+                    var result = xhr.responseText;
+
+                }
+            }   
+    打开链接，
+        open(method，url，isAsyn) 打开链接
+        string get post
+        string url
+        isAsyn boolean类型 同步或者异步
+    发送请求，
+        xhr.send(body) 如果没有请求主体，body为null即可
+innerHTML 可以包含html的标签语法    
+css 基础第一课 下午 
+
+location.href = ""
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ajax</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <script src="main.js"></script> <br>
+</head>
+<body>
+    <div id="d1">this is test text</div>
+    <p id="p1"> this is text in p <input type="button" value="get" onclick="gettext()"></p>
+    
+    
+    <input type="text" name="aa" id="text1" value="dangdang"> 
+    <input type="button" value="get text" onclick="gettext2()"> <br>
+    
+    <input type="button" value="test xhr" onclick="request()">
+</body>
+</html>

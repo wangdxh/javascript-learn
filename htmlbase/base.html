@@ -212,10 +212,100 @@
                     text/plain 只能提交普通字符
             可视化控件
             input  页面中提供各种输入控件，文本框，密码框，单复选
-             10:45 urlhttp 第一节   
+                属性： type 制定输入控件的类型
+                       name 为空间定义名称 提交给服务器端使用
+                       value 属性 提交给服务器使用
+                       disabled 禁用控件 该属性没有值
+                 详解：
+                      文本框和密码框 type = text password 
+                      value 表示默认值 
+                      maxlength 限制输入字符数
+                      readonly 只读 允许提交给服务器 该属性也没有值
+                      placeholder 占位符 默认显示在控件上的文本
+                      行内元素 使用p 或者br
+
+                      提交按钮 type = submit 用于提交 value 是提交按钮的名字
+                      将表单中的数据，提交给服务器
+
+                      重置按钮 type = reset
+                      将表单内容恢复初始化
+
+                      普通按钮 type = button 没有任何功能 
+                      value 是定义按钮上的文字内容
+                      
+                      单选按钮和复选框 type= radio  checkbox
+                      name 除去定义控件的名称外，还能起到分组的作用
+                      复选框name的值表示为数组 name名称跟着[]
+                      checked 没有值的一个属性，表示选中
+
+                      隐藏域和文件选择框
+                      type=hidden 想提交给服务器，又不需要展示给用户看
+
+                      文件选择框
+                      type=file 大小比较大， method 为post
+                      enctype 值修改为 multipart/form-data
             texearea
+                允许录入多行数据的文本框
+                name 定义控件名称，提供给服务器
+                readonly  
+                cols列 制定文本的列数，指定了宽度，能显示多少英文字符
+                rows 制定行数 超出rows 会出现滚动条
+                
             select元素
-            其他元素
+                选项狂 select 在页面中标记一个选项框
+                option 在select的嵌套内里 表示选项的具体选项
+                下拉框也就是 
+
+                select属性
+                name 定义选项框的名称
+                size 定义显示选项的数量 默认为1 只能看到一个选项
+                     大于1能显示多个选项，
+                mutiple 属性设置多选 这个属性没有值 ctrl 多选
+                这是下拉列表和多选list
+                
+                option的属性
+                value 定义选项的值 提交给服务器的值
+                selected 设置默认选中项 没有值
+        其他元素
+                label 元素 进行关联文本和表单控件
+                    <label>文本</label> for属性值设置为关联控件的id值
+                为控件分组的元素 用的不多
+                fieldset 分组  会把分组框起来，
+                legend 为分组制定标题
+                <fieldset>
+                    <legend> title </legend>
+                    放置其他控件
+                </fieldset>
+                浮动框架 用来引入其他网页的元素
+                iframe src 指定要引入网页的路径
+                手动设置高宽 width height
+                边框一般设置为0 frameborder
+                
+新的表单控件，可能在某些浏览器上无法显示
+    input 电子邮件 type = email
+          搜索 type = search 作用是提供了快速清楚的功能
+          url 类型 type=url
+          type = number 数字类型 只能接收数字 可以灵活调整数字的值
+              value 控制值 min max 最小和最大值
+              step 调整时的步伐
+          tel 电话类型 在移动设备中，显示为拨号键盘的效果
+          范围类型 type=range 允许用户选取制定范围的值
+              value 控制值 min max 最小和最大值
+              step 调整时的步伐 
+          颜色控件 type=color
+              选择任何颜色
+          日期类型 type=date 选择日期
+          周类型 week 一年内第几周 月类型 month
+
+
+
+
+
+    
+
+            
+
+
 
 
 
