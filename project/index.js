@@ -1,33 +1,37 @@
-const express = require('express')
-const user = require('./router/user.js')
-const login = require('./router/login.js')
-const bodyParser = require('body-parser')
-
+const express = require("express");
+const bodyParser = require("body-parser");
+const user = require("./router/user.js");
+const login = require("./router/login.js");
 
 var app = express();
 
-app.use(express.static(__dirname+'/static'))
+app.use(express.static(__dirname + "/static"));
 
-app.use(bodyParser.urlencoded({
-    extended:false //不使用querystring的查询字符串
-}))
-app.use(bodyParser.json())
-app.use(login.passport.initialize())
-//app.use(login.passport.session({session:false}))
+app.use(
+  bodyParser.urlencoded({
+    extended: false
+  })
+);
+app.use(bodyParser.json());
+app.use(login.passport.initialize());
 
-app.use('/login', login.router)
+app.use("/login", login.router);
 
-// use jwt token
-app.use(login.passport.authenticate("jwt", { session: false, failureRedirect: '/login'}))
+//before this line all route will not use jwt token
+//after this line all route will use jwt token
+app.use(
+  login.passport.authenticate("jwt", {
+    session: false,
+    failureRedirect: "/login"
+  })
+);
 
-app.use('/user', user)
-app.get('/', (req, res)=>{
-    console.log('in user:', req.user, req.isAuthenticated())
-    res.send('this is main html')
-})
+app.use("/user", user);
+app.get("/", (req, res) => {
+  console.log("in user:", req.user, req.isAuthenticated());
+  res.send("this is main html");
+});
 
-
-
-app.listen(8080, ()=>{
-    console.log('express listen ok')
-})
+app.listen(8080, () => {
+  console.log("express listen ok");
+});
