@@ -69,7 +69,8 @@ let JwtStrategy = passportjwt.Strategy
 let ExtractJwt = passportjwt.ExtractJwt
 
 let opts = {}
-opts.jwtFromRequest = ExtractJwt.fromUrlQueryParameter('token')
+opts.jwtFromRequest = ExtractJwt.fromExtractors([ExtractJwt.fromUrlQueryParameter('token'),
+                        ExtractJwt.fromAuthHeaderAsBearerToken(), ExtractJwt.fromBodyField('token')])
 opts.secretOrKey = secretOrPrivateKey
 passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
     console.log('in get user', jwt_payload);
