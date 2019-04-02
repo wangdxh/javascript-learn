@@ -1,76 +1,79 @@
 const express = require('express')
-const https = require('https')
-const util = require('util')
+const passport = require('passport')
+const jwt = require('jsonwebtoken')
+const GitHubStrategy = require('passport-github2').Strategy
+const passportjwt = require('passport-jwt')
 
 var router = express.Router()
+var secretOrPrivateKey = 'this is my name'
 
-let cfggithub = {
-    url: 'https://github.com/login/oauth/authorize',
-    tokenurl: 'https://github.com/login/oauth/access_token',
-    redirecturi: 'http://172.16.64.92/login/github/callback',
-    clientid: 'aa1bd897e98454d5f70a',
-    scope: 'user',
-    secretid: '74a3381bbbad4b281e47bddb5a237761641478c2',
+passport.use(
+    new GitHubStrategy({
+        clientID: 'aa1bd897e98454d5f70a',
+        clientSecret: '74a3381bbbad4b281e47bddb5a237761641478c2',
+        callbackURL: 'http://172.16.64.92:8080/login/github/callback'
+    },
+        (accessToken, refreshToken, profile, done) => {
+            console.log(accessToken, refreshToken)
+            //console.log(profile)
+            process.nextTick(function () {
+                // To keep the example simple, the user's GitHub profile is returned to
+                // represent the logged-in user.  In a typical application, you would want
+                // to associate the GitHub account with a user record in your database,
+                // and return that user instead.
+                return done(null, profile);
+            })
+        })
+)
+
+router.get('/github', passport.authenticate('github',
+    { scope: ['user:email'], state:new Date().getTime()})
+)
+
+router.get('/github/callback',
+    passport.authenticate('github', { session: false, failureRedirect: '/login' }),
+    function (req, res) {
+        // Successful authentication
+        //{"id":"5762153","displayName":"wangxiaohui","username":"wangdxh","profileUrl":"
+        res.json({
+            id: req.user.id,
+            displayName: req.user.displayName,
+            id: req.user.id,
+            username: req.user.username,
+            profileUrl: req.user.profileUrl,
+            token: sign(req.user.displayName, req.user.id)
+        })
+    });
+
+router.get('/', (req, res) => {
+    res.send('this is login html, <a href="/login/github">github</a>')
+})
+
+//------------------------------jwt
+
+function sign(name, id) {
+    return jwt.sign({ name: name, id: id }, secretOrPrivateKey, { expiresIn: 120 * 1 })
 }
 
-router.get('/github', (req, res) => {
-    let path = util.format('%s?client_id=%s&scope=%s&redirect_uri=%s&state=%s',
-        cfggithub.url, cfggithub.clientid, cfggithub.scope,
-        cfggithub.redirecturi, (new Date()).valueOf())
-    console.log(path)
-    res.redirect(path);
+router.get('/jwt', (req, res) => {
+    if (!req.query.uname || !req.query.upwd) {
+        res.send('error')
+        return
+    }
+    let token = sign(req.query.uname, '22345676')
+    console.log(token)
+    res.json({ token })
 })
 
-router.get('/github/callback', (req, res) => {
-    let state = req.query.state    
-    
-    let path = util.format('%s?client_id=%s&client_secret=%s&redirect_uri=%s&code=%s',
-        cfggithub.tokenurl, cfggithub.clientid, cfggithub.secretid,
-        cfggithub.redirecturi, req.query.code)
-    console.log(path);
+let JwtStrategy = passportjwt.Strategy
+let ExtractJwt = passportjwt.ExtractJwt
 
-    var req = https.get(path, function (restoken) {
-        restoken.setEncoding('utf8')
-        console.log('get token step1 ok');
-        restoken.on('data', function (data) {
+let opts = {}
+opts.jwtFromRequest = ExtractJwt.fromUrlQueryParameter('token')
+opts.secretOrKey = secretOrPrivateKey
+passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
+    console.log('in get user', jwt_payload);
+    done(null, jwt_payload)
+}))
 
-            console.log('get token step2 ok');
-            var args = data.split('&');
-            var tokenInfo = args[0].split("=");
-            var token = tokenInfo[1];
-            console.log(token);
-
-            let options = {
-                method: 'GET',
-                hostname: 'api.github.com',
-                port: 443,
-                path: '/user?access_token=' + token,
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'
-                }
-            }
-            var url = "https://api.github.com/user?access_token=" + token
-            console.log(url)
-
-            https.get(options, function (resuser) {
-                resuser.on('data', function (userInfo) {
-                    console.log(userInfo.toString());
-                    res.write(userInfo.toString())
-                });
-                resuser.on('end', () => {
-                    console.log('response end')
-                    res.end()
-                })
-            }).on('error', (err) => {
-                console.log(err)
-                res.send('error get userinfo')
-            });
-        })
-    }).on('error', (err) => {
-        console.log(err)
-        res.send('error get token')
-    });
-})
-
-
-module.exports = router
+module.exports = { router, passport }
