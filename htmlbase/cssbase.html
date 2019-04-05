@@ -297,23 +297,229 @@ x， y 取值为正，向右移动  为负值，向左移动
 100% 100% 右下角的位置 或者 left center right 左中右 
 body比较特殊，指的是可视化的宽度，高度是不固定 垂直方向也有
 
-background  color url() repeat attachment position;
+简写的方式background  color url() repeat attachment position;
 
 背景渐变：
-1:40:00
-文本格式化，表格，浮动 PM
+多种颜色平缓变化的一种显示效果
+色标：一种颜色及其出现的位置
+一般渐变由多个色标组成，至少2个
 
-             
+线性渐变
+background-image
+取值：linear-gradient（angle， color-point1，color-point2，，，）
+angle表示渐变填充的方向或者角度 to top；to bottom；to left；to right
+角度值：0deg 0度为12点方向，顺时针增加
+color-point：red 0% 填充颜色和位置，空格隔开
+多个色标之间逗号分割
+
+径向渐变
+以圆形的方式来填充
+radial-gradient（[size  at position], color-point1, color-point2）
+size at position: 
+size 半径： px
+at 关键词
+position 圆心的位置，默认在中心位置，可以取值：x y 具体数字或者百分比
+可以供关键词 left center right top bottom
+
+
+重复渐变
+将线性渐变或径向渐变重复几次出现
+repeating-linear-gradient  参数和线性一样  重复渐变时设置的区域不能大
+repeating-radial-gradient 参数和经性一样
+================================================
+www.caniuse.com 查看浏览器对属性的支持情况
+================================================
+
+文本格式化属性：
+字体属性
+字体类型 font-family 取值：逗号隔开列表 “微软雅黑”，“黑体”
+font-size px 或者pt 指定大小
+字体加粗： font-weight
+bold 加粗 normal正常 value：400等同于normal 900等同于bold
+font-style
+normal italic 斜体
+
+小型大写字母，将小写字母变为大写，但大小与小写字母一样大
+font-variant
+normal small-caps
+
+
+font：style variant weight size family
+必须设置family的值，否则无效
+
+color 颜色
+text-aligh 文本排列 行内或者行内块水平对齐 ********************
+left center right justify 两端对齐
+
+设置文字修饰线条
+text-decoration 取值 none，underline，overline，line-through
+
+设置一行数据所占的高度
+line-height：px为单位，无单位的数字 2 设置为当前元素字体的2倍
+如果行高设置的比文字的高度大的画，该行文本将在指定行高内呈现垂直居中的效果
+
+首行文本缩进 text-indent px为单位
+
+文本阴影：
+text-shadow
+h-shadow v-shadow blur color；
+5px 5px 3px red
+
+=======================================
+表格常用属性：
+padding
+border
+width height
+文本格式花
+背景属性
+
+vertical-align：top middle bottom 
+边框的合并属性：
+border-collapse：separate 分离边框
+collapse 边框的合并
+
+边框边距：设置单元格之间，或者单元格和表格之间距离
+boder-spacing：取值
+指定一个值：水平和垂直间距相同
+两个值：水平间距，垂直间距
+
+caption-side caption的位置
+top 和 bottom
+
+显示规则：
+帮助浏览器制定如何布局一张表：指定td尺寸的计算方式
+table-layout
+取值： auto 由内容决定
+      fixed 由设定的值为准
+
+========================================
+定位-浮动定位 重点
+
+定位指的是改变元素在页面中的位置
+定位分类：
+普通流方式 默认 
+又称为文档流定位，每个元素在页面中都是在父元素左上角开始显示
+每个元素在页面中一定都有自己的空间
+块级元素都是按照从上往下排列，每个元素独占一行
+行内元素以及行内块元素都是按照从左往右的方式来排列
+
+浮动定位
+特点：元素将被排除在文档流之外，不再占页面空间，其他未浮动的元素，将上前补位
+浮动元素会停靠在其父元素的左边或右边，或其他已经浮动元素的边缘
+解决问题：让多个块级元素在一行中显示
+float：none 默认值 left 或者 right 让元素停靠在父元素的左边，
+或者挨着左侧已经浮动的元素边缘
+多个浮动的，按照左侧或者右侧的顺序，来排
+浮动引发的特殊效果：当父元素显示不下所有已经浮动的元素时，最后一个将换行
+但是换行的效果，可能被第一个元素高度，卡住的情况
+
+浮动元素不设置宽度时，由内容决定宽度
+
+当不用div，使用span时，float之后，所有的元素都将变成块级元素
+文本，行内元素，行内块元素采用环绕的方式，排列，不会被浮动元素压在下方
+而是会避开，但是后续的块元素会被遮挡
+解决带来的效果：如果后续元素不想去补位，可以清除影响
+clear left right both none 清除当前元素的前面元素所带来的影响
+
+浮动对父元素的高度影响：
+默认情况下父元素的高度，都是以未浮动的元素的高度为准
+一旦浮动起来，就不占页面控件，高度将为0
+可以直接设置父元素的高度，弊端：不是每次都知道副元素的高度
+设置父元素也浮动起来 弊端：布局更加复杂
+设置副元素的overflow 取值 hidden 或者 auto 影响溢出
+完美的方案：父元素中加一个空的块级元素，设置clear属性为both
+
+
+相对定位 绝对定位 固定定位
+position 
+取值：static 默认值
+relative 相对定位
+absolute 绝对定位
+fixed 固定定位  已定位元素
+只有已定位元素才能使用偏移属性
+
+相对位置：元素会相对于它原来的位置偏移某个距离
+使用场合：做元素位置的微调时使用  img：hover 鼠标放上去时，微调
+简易动态的感觉
+
+绝对定位：
+position：absolute 
+使用场合：弹出菜单，有堆叠效果的元素
+
+绝对定位的元素会脱离文档流，不占页面空间
+绝对定位的元素会相对于离他最近的，已经定位的祖先元素，去实现位置的初始化
+如果没有已定位的祖先元素，那么元素相对于body去显示位置的初始化
+绝对定位会将元素变为块级元素
+
+一般父元素设置为相对位置，子元素这是为绝对位置
+
+一旦将元素变为已定位元素的话，元素们会出现堆叠的效果，如果想要改变默认的
+顺序，需要改变元素的z-index
+z-index 无单位的数字
+数字越大，越靠上 父子元素之间zindex 无效
+
+固定位置：将元素固定在页面的某个位置，位置不会随着滚动条而发生位置的变化
+始终固定在可视化的区域中
+position：fixed
+不占页面空间，固定位置相对于body，不受父元素影响，固定定位的元素变成块级元素
+
+
+偏移属性：
+top bottom left right 均为数字px单位
+
+
+显示方式：决定元素在网页中的表现形式（块级，行内，行内块等）
+display none 不现实，隐藏
+block 表现的与块级元素一致  从上往下排，单独占一行，设置尺寸和垂直外边距
+inline 表现的与行内元素一致  从左往右在一行中显示，不能修改尺寸 img除外
+inline-block 表现的与行内块一致 特点：排列方式如同行内元素，
+                                  具备块元素的特征，允许修改尺寸
+                                  也可以设置垂直外边距，会影响整行
+table 和table表现的一致 特点：尺寸大小由内容决定，每个表格独占一行
+                           本身自带宽高属性
+                        
+可以不需要浮动，直接使用inline-block，完成一行，可以调整尺寸的
+很少将块级，转换成行内的，一般讲行内，转成行内块或者块级
+
+
+显示效果：
+属性：visibility  visible可见  hidden 不可见
+和display的区别： display时 隐藏了，不占位置， visibility 隐藏，占页面空间
+
+透明度： opacity 取值0-1， 越大越不透明
+整体（背景和文字）会变透明，background rgba，只是背景透明，文字不透明
+rgba 只作用与当前的某个颜色值
+
+垂直的对齐方式：
+vertical-align 取值：
+表格中使用时  top middle bottom
+图片中使用时  top middle bottom base 默认值 通常修改为：不是base的方式
+
+
+鼠标的显示状态：
+cursor：default pointer 小手 crosshair 加号
+        text 竖条  wait 沙漏 help 帮助
+==================================================
+列表：
+list-style-type：none 无标示
+      disc circle square 一般都是不显示
+
+设置列表项图像
+list-style-image url（）
+
+列表项位置
+list-style-position outside （默认）
+                    inside
+讲标示放在li的里边
+
+属性简写：
+list-style type image position
 
 
 
 
 
-
-
-
-
-
+下午1.23 pm css3 01
 
 
 
