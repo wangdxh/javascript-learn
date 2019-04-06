@@ -594,10 +594,161 @@ content 向匹配到的位置处，增加内容
 url（）插入图片
 内容的样式设置
 
-css3 02 pm
+=====================================
+弹性布局 flexible layout 一种布局方式
+解决某元素中，子元素的布局方式，提供了极大的灵活性
+
+1 容器
+子元素的父亲元素称为容器
+2 项目
+要实现布局的子元素称为项目
+3 主轴
+项目们排列方向的一根轴
+4 交叉轴
+与主轴垂直相交的一根轴
+
+语法：元素变为flex之后，所有子元素都将变为flex项目
+属性：display：flex 或者
+     inline-flex 将行内元素变成容器
+元素变成flex之后，子元素的float，clear，
+vertical-align就失效了；子元素的尺寸允许被修改
+尼玛，那我学习float干啥
+
+容器属性：
+flex-direction 主轴及其排列方向
+取值：row 默认值； row-reverse 起点在右端
+     column  column-reverse
+flex-wrap 设置子元素是否换行，当主轴排列不下所有元素时
+no-wrap 空间不足时不换行，项目自动缩小
+wrap 换行
+wrap-reverse 换行，并反转，顺序
+
+flex-flow：主轴 换行
+justify-content：两端对齐
+定义项目在主轴上的对齐方式
+flex-start 在主轴的起点对齐
+flex-end 在终点对齐
+center 居中对齐
+space-between 两端对齐
+space-around 每个项目两端的间距相同
+
+align-items： 定义项目在交叉轴上的对齐方式 父亲元素比较高时
+flex-start在交叉轴上，靠起点对齐
+flex-end
+center
+baseline 交叉轴上的基线对齐
+stretch 如果项目未设置尺寸，在交叉轴上占满所有空间
+
+项目属性：该组属性只能设置在某一个项目元素上，只控制一个项目
+不影响其他项目
+order： 定义项目的排列顺序，值越小，越靠近起点，默认值为0
+        小的往前，大的往后
+flex-grow 定义项目的放大比例，如果容器有足够的剩余空间
+        项目按照比例放大 整数数字，默认值0 不放大
+        取值越大，占据剩余空间的比例越多
+flex-shrink 缩小比例，容器空间不足时，项目按照比例缩小
+默认值1，空间不足时，则等比缩小；某个元素取值为0，则不缩小
+值越大，缩小的越快
+
+align-self：定义当前项目在交叉轴的对齐方式
+flex-start
+flex-end
+center
+baseline
+stretch
+auto 自动去继承父亲元素的align-items的属性值
+================================================
+转换： 改变元素在页面中的位置，大小，角度，以及形状的方式
+
+2D转换，只在x，y轴发生转换效果
+3D转换，增加z轴的转换
+
+transform：
+取值：none默认值
+     transform-function 表示一个或者多个转换函数
+                        多个转换函数一起用，空格隔开
+
+转换原点： transform-origin 取值：数值或者百分比 关键词
+默认的原点在元素的中心位置 center center
+如果2个值：表示原点在x y轴的位置，三个值，第三个表示z轴
+
+2d转换：改变位移
+函数： translate（x） 指定元素在x轴上位移距离
+translate（x，y）
+translateX（x）
+translateY（y）
+
+缩放：
+scale（value）横向和纵向缩放比例相同
+scale（x，y）
+scaleX scaleY
+默认value是1，大于1时放大，小于1缩小
+小于0时，也是放大，水平和垂直方向都翻转180度
+
+旋转：
+rotate（ndeg）角度
+为正顺时针，负的逆时针
+
+倾斜：
+改变页面中元素的形状
+skewX 单位deg 让元素向着x轴的方向产生倾斜效果，实际改变的
+是y轴的角度值
+skewY
+skew（x， y）
+
+3D转换
+透视距离 模拟人的眼睛到3d转换元素之间的距离
+属性： perspective
+该属性要加在3d元素的父亲元素上
+值越小 3d效果越强烈
+
+旋转效果：
+属性：transform
+取值：rotateX（xdeg）绕着x轴转动
+rotateY， rotateZ rotate3D（1， 1， 1，ndeg）1参与 
+
+====================================
+过渡：使得css样式在一段时间内平缓变化的效果
+
+属性：transition-property
+指定哪个属性值在变化的时候，需要用过渡的方式
+取值：all 能使用过渡的属性，一律用过渡体现
+或者具体的属性名 background 颜色，取值为数字的
+转换属性，渐变属性，显示隐藏 visibility
+过渡效果
+
+指定过渡的时长：
+1000ms = 1s
+transition-duration：
+
+transition-timing-function：指定速度时间曲线函数
+ease 默认值，慢，快，慢
+linear 匀速
+ease-in 慢速开始，加速结束
+ease-out 快速开始，慢速结束
+ease-in-out
+
+transition-delay：
+延迟多少秒，再去执行
+
+把过渡属性的编写位置放在元素声明的样式中，来回都是动画
+
+简写方式：
+transition：property duration timing-function delay
+==============================================
+动画
+从元素的一种样式逐渐的变化为另一种样式，将多个过渡效果放一起
+先跳过？？？
 
 
-
+===============================================
+CSS优化原则：
+尽量减少http请求个数
+页面顶部引入css文件
+css和js放到外部独立的文件中
+合并样式
+避免空的src和href
+===========================================
 
 
 
