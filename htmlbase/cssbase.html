@@ -515,11 +515,91 @@ list-style-position outside （默认）
 属性简写：
 list-style type image position
 
+固定位置相对于body 相对位置相对于自己 
+绝对位置相对于最近的定位的父亲元素，没有父亲时，用body 用于堆叠效果
+
+=======================================================
+css3 高级属性
+
+复杂选择器：
+兄弟选择器：兄弟元素，具备相同父亲的平级元素之间
+相邻兄弟选择器；
+选择器1 + 选择器2
+    用于修饰选择器2元素
+
+通用兄弟选择器：
+获取某元素后所有满足条件的兄弟元素
+选择器1～选择器2
+    修改选择器2定位的元素
+
+属性选择器
+id class style title name type value等
+作用：允许我们通过元素所附带的属性及值来匹配元素
+
+[attr] 属性
+页面中所有附带attr属性的元素 【id】所有附带id属性的元素
+
+elem[attr] elem表示任意元素
+
+[attr1][attr2]... 匹配同时附带多个属性的元素
+
+[attr=value]
+页面中attr属性值为value的元素 [id=“one”]等同于#one
+[attr～=value]
+匹配属性值中包含指定词汇的元素，独立的单词
+[attr^=value]以指定值开头的元素
+
+$= 以指定值结尾  *= 包含指定值
+
+
+伪类选择器：
+链接： link visited
+动态：hover active focus
+
+目标伪类：突出显示活动的html锚点，匹配被激活的锚点
+语法：
+选择器：target{}
+
+锚点：href = “#id”即可
+配合display 比较有用
+
+
+结构伪类
+通过元素的结构关系来匹配元素，上下级嵌套
+子元素：first-child 选择作为父亲元素的第一个子元素 
+
+：last-child
+：nth-child（n）匹配属于其父元素中的第n个元素
+
+：empty 匹配没有子元素的元素  div：empty
+
+子元素：only-child  是其父亲元素的唯一子元素
+
+否定： ：not（selector 任意选择器）{} 
+
+伪元素选择器
+：：first-letter 或者：first-letter 匹配元素的首字符
+：：first-line ：first-line
+：：selection 被用户选中的内容 只能修改文本和背景颜色
+=========================================
+内容生成
+使用css动态的向元素中插入一段内容
+伪元素选择器
+：before ：：before 匹配到某元素的内容区域之前
+：after ：：after
+
+<p>before "text" after</p>
+content 向匹配到的位置处，增加内容
+取值：字符串，用引号
+url（）插入图片
+内容的样式设置
+
+css3 02 pm
 
 
 
 
-下午1.23 pm css3 01
+
 
 
 
