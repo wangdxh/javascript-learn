@@ -5,8 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>bootstrap</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
-    <script src="main.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
     <!--
@@ -52,18 +51,161 @@ media：媒体，浏览网页的设备
     选择器{样式}
 }
 
+===========================================
+Bootstrap css框架
+
+1. viewport
+   引入bootstrap css，js文件
+   body中放入container
+
+2. 全局CSS类
+    特点：所有的标记的默认样式都统一化，重写了
+    设置box-sizing：为border-box
 
 
+bootstrap 03 am
+-->
+    <div class="container">
+        <h1>按钮相关</h1>
+        <input type="button" class="btn" value="btn">
+        <input type="button" class="btn btn-danger" value="btn-danger">
+        <input type="button" class="btn btn-primary" value="btn-primary">
+        <input type="button" value="sucess" class="btn btn-warning">
+        <br><br><br>
+        <input type="button" value="sucess block" class="btn btn-success btn-block">
+       <br>
+        <input type="button" value="sucess sm" class="btn btn-success btn-sm">
+        <input type="button" value="sucess lg" class="btn btn-success btn-lg ">
+        
+    </div>
 
-bootstrap 02 am
+    <div class="container">
+        <h1>图片相关</h1>
+        <p>rounded rounded-circle img-thumbnail img-fluid 响应式图片</p>
+        
+        <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1554560835631&di=181d683a30a4117d496bf569a2ce4c1e&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20190228%2F2cc9962204bd4f8999eff12780b2db8d.jpeg" 
+        alt="" class="rounded-circle">
+        <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1554560835631&di=181d683a30a4117d496bf569a2ce4c1e&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20190228%2F2cc9962204bd4f8999eff12780b2db8d.jpeg" 
+        alt="" class="img-thumbnail">
 
+        <h1>文字相关</h1>
+        <p> h1-h6 text-danger text-scuess info light
+            <br>
+            text-uppercase lowercase capitalize <br>
+            text-left center right justify nowrap <br>
+            font-weight-bold fond-weight-light normal <br>
+        </p>
+        <div class="text-danger text-center font-weight-bold">
+                ffsfdafafdsfddsfdafds
+        </div>
+        <h1>列表相关</h1>
+        <p>
+            list-unstyled 去除标示的效果
+            list-inline 行内列表 <br>
+            list-group 列表分组
+            list-group-item 列表子项
+            active 激活 <br>
+            disabled 禁用
+            <br> list-group-item-danger sucess info primary 
+            <ul class="list-unstyled list-group ">
+                <ui class="list-group-item list-group-item-success active">成功项 激活</ui>
+                <ui class="list-group-item list-group-item-success">成功</ui>
+                <ui class="list-group-item list-group-item-primary">主要</ui>
+                <ui class="list-group-item list-group-item-primary disabled">主要 disabled</ui>
+                <ui class="list-group-item">次要</ui>
+            </ul>
+        </p>
+        <h1>表格</h1>
+        <p>
+            table table-borderd table-striped 隔行变色 table-hover 鼠标悬停
+            <br>
+            table-primary success <br>
+            table-responsive 响应式的表格 一般用在table的父亲元素上
+        </p>
+        <div class="table-responsive">
+            <table class="table table-primary table-bordered table-striped table-hover">
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>11</td>
+                    <td>12</td>
+                </tr>
+            </table>
+        </div>
+        <h1>辅助类</h1>
+        <p>
+            浮动 float-*-left right <br>
+            clearfix 清除浮动 <br>
+            显示 visible invisible <br>
+            背景：bg-success info danger <br>
+            边框：border border-0 border-top left right <br>
+            border-success info danger <br>
+            圆角：rounded rounded-0 圆角 <br>
+            rounded-top bottom left right <br>
+            居中对齐：m-auto  边距：m-0 m-1 m-n <br>
+            ml mr mt md  m替换为p 内边距<br>
+            宽度和高度： w-25/50/75/100 占父亲元素的比例 <br>
+        </p>
+        
+        <div class="clearfix bg-light">
+                <h1>浮动</h1>
+                <div class="w-50 pt-5 text-center bg-success float-left">fff</div>
+                <div class="w-25 bg-primary float-right">sss</div>
+        </div>
+        <h1>test</h1>
+        <div class="border border-light bg-primary pt-3 pb-3 pl-4 text-white 
+                     rounded-top">成功</div>
+        <div class="border border-light bg-primary pt-3 pb-3 pl-4 text-white">危险</div>
+        <div class="border border-light bg-warning pt-3 pb-3 pl-4 text-white">警告</div>
+        <div class="border border-light bg-primary pt-3 pb-3 pl-4 text-white">主要</div>
+        <div class="border border-light bg-info pt-3 pb-3 pl-4 text-white rounded-bottom">次要</div>
 
+        <h1>bootstrap的栅格布局</h1>
+        <p>
+            简单，容易控制，语义正确，本质还是div+css <br>
+            如果页面太复杂，还是不合适，建议移动端和pc端分开写 <br>
+            使用： <br>
+             最外面是container 里面是row 行里面放置 col  <br>
+             row col 都是bootstrap 定义好的 col里面可以嵌套行列<br>
+             默认一行12等份，如果想占4份的话，col-4 col-8 一行共12份 <br>
+             步骤：container 定宽的 container-fluid 变宽的 <br>
+             容器中添加行，row 行里面去增加列 col <br>
+             每个列都需要指定它的宽度占比，使用n 比 12 <br>
+        </p>
+        <div class="row">
+            <div class="col-1 bg-info">col-1</div>
+        </div>
+        <div class="row">
+                <div class="col-4 bg-info">col-4</div>
+        </div>
+        <div class="row"> 
+            <div class="col-10 bg-info">col-10</div>
+        </div>
+        <div class="row" style="word-break:break-all; word-wrap:break-all;">
+            <div class="col-4 border border-primary">unit 1</div>
+            <div class="col-4 border border-primary text-justify" > <p> unit 2xffdfafdsafdasfdsafdasfasdfsafdasfdsfdsfdafdsa</p></div>
+            <div class="col-4 border border-primary">unit 3人人人人肉肉肉肉肉肉肉肉人肉肉肉肉肉肉肉肉肉肉肉肉肉肉</div>
+        </div>
 
+    </div>
+    
 
-
-
-
-
-    -->
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>
