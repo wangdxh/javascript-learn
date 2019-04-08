@@ -195,15 +195,156 @@ bootstrap 03 am
         <div class="row"> 
             <div class="col-10 bg-info">col-10</div>
         </div>
+        <!--
+            style="word-break:break-all; word-wrap:break-all;"
+            这里不换行，因为连续的英文，被理解成了一个单词，妈蛋
+        -->
         <div class="row" style="word-break:break-all; word-wrap:break-all;">
-            <div class="col-4 border border-primary">unit 1</div>
-            <div class="col-4 border border-primary text-justify" > <p> unit 2xffdfafdsafdasfdsafdasfasdfsafdasfdsfdsfdafdsa</p></div>
+            <div class="col-4 border border-primary">unit 1xxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxx xxxxxxxxxxxxxxx</div>
+            <div class="col-4 border border-primary" > <p> unit 2xffdfafdsafdasfdsa fdasfasdfsafdasfdsfdsfdafdsa</p></div>
             <div class="col-4 border border-primary">unit 3人人人人肉肉肉肉肉肉肉肉人肉肉肉肉肉肉肉肉肉肉肉肉肉肉</div>
         </div>
 
+
+        <div class="row">
+                <div class="col-1 border border-primary">
+                        xs-1
+                    </div>
+                    <div class="col-sm-1 border border-primary">
+                        sm-1
+                    </div>
+                    <div class="col-md-1 border border-primary">
+                        md-1
+                    </div>
+                    <div class="col-lg-1 border border-primary">
+                        lg-1
+                    </div>
+            <div class="col-4 border border-primary">
+                xs-4
+            </div>
+            <div class="col-sm-4 border border-primary">
+                sm-4
+            </div>
+            <div class="col-md-4 border border-primary">
+                md-4
+            </div>            
+            <div class="col-lg-4 border border-primary">
+                lg-4
+            </div>  
+        </div>
+        <h1> test col </h1>
+        <div class="row">
+                <div class="col-1 border border-primary">
+                        col-xs-1
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-sm-1 border border-primary">
+                        col-sm-1
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-md-1 border border-primary">
+                        col-md-1
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-lg-1 border border-primary">
+                        col-lg-1
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-2 border border-primary">
+                        col-xs-2
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-sm-2 border border-primary">
+                        col-sm-2
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-md-2 border border-primary">
+                        col-md-2
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-lg-2 border border-primary">
+                        col-lg-2
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-3 border border-primary">
+                        col-xs-3
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-sm-3 border border-primary">
+                        col-sm-3
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-md-3 border border-primary">
+                        col-md-3
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-lg-3 border border-primary">
+                        col-lg-3
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-4 border border-primary">
+                        col-xs-4
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-sm-4 border border-primary">
+                        col-sm-4
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-md-4 border border-primary">
+                        col-md-4
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-lg-4 border border-primary">
+                        col-lg-4
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-sm-12 border border-primary">
+                    <p>
+                       规律：<br>
+                            当前的media，比设定的media大时，当前如果在lg范围内，设定的media为sm 则升级为sm升级为lg，列数值不变；<br>
+                            当前meida等于设定的media时，正常效果生效 <br>
+                            当前的media小于设定的media时，当前为sm，设定为md，或者lg，则md和lg，表现为一整行 <br>
+                            <br>设置浏览器为md的格式时，可以看到sm md lg的效果
+                            <br> 最小的不是xs，而是 col-n 
+
+
+                    </p>
+                </div>
+        </div>
+        <h1>test offset</h1>
+        <div class="row">
+            <div class="col-sm-4 offset-sm-4 border border-primary">offset 4 sm 4 </div>
+            <div class="col-sm-4  border border-primary">sm 4</div>
+            <div class="col-sm-4 offset-sm-4 border border-primary">offset 4 sm 4</div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    offset 表示一列之内的便宜，当当前的media大于等于设定的大小时，生效 <br>
+                    当当前的media小于设定的meida时，独立成行，也就无所谓offset了
+                </p>
+            </div>
+        </div>
+        
+        
     </div>
     
-
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
