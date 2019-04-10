@@ -111,8 +111,128 @@ interpolation {{}} 中可以包含以下几种情况的内容：
     7. v-cloak 在vue实例加载完之前，暂时隐藏需要绑定的元素
         避免在vue实例加载完之前，用户短暂看到{{}}
         1.自定义v-cloak属性选择器，定义display：none
-        2.在要绑定的元素上，添加v-cloak
-        new vue实例加载完成后，会自动找到v-cloak属性并移除
-        问题：Vue有个 mounted() 在加载成
+            [v-cloak]{display:none}
 
-第三阶段前端进阶\3：Vue\02： 自定义、 组件通信am 02:35:00
+        2.在要绑定的元素上，添加v-cloak
+        原理 new vue实例加载完成后，会自动找到v-cloak属性并移除
+        存在问题：有个 mounted() 函数，相当于vue的onload函数
+        在Vue加载完成后，自动执行。
+        mounted(){
+            settimeout(): {
+                this.price = 34.5
+            }
+        }
+        mounted会飞快的执行完，然后取消v-cloak，这时候数据还没有
+        回来，v-cloak不起作用；应该使用v-text绑定内容
+
+    8. v-pre 保护内容中的{{}}不被编译，保持原样
+        正文中刚好也有{{}}时，不想被vue识别
+
+    9. v-once 让当前元素只在首次加载时，绑定一次，之后即使模型数据
+        变化，也不会更新
+
+    10. 双向绑定 用于绑定表单元素 v-model:value="kword"        
+        简写方式：v-model="kword"
+
+        v-bind单向绑定仅能模型数据更新到视图中
+        双向既能模型到视图，又能视图到模型
+        input type="text" :value="kword" 
+        data:{
+            kword:''
+        },
+        methods:{
+
+        },
+        watch：{
+            kword(){
+                // 监听kword 界面的修改
+                // 用于搜索帮助和表单验证
+            }
+        }
+各种表单元素的绑定方式：
+1 文本框/文本域 v-model="模型变量"
+2 单选按钮 radio name="groupname" value="1" v-model="gender"
+    v-model 绑定的是checked操作 和 value的值进行比较
+    checked = （变量==value）
+3 复选框 绑定的也是checked属性 v-model="isAgree" true 和 false
+4 选择框 select option 在select上 v-model=""
+
+绑定class 和 style 属性
+1 字符串方式绑定class 和 style
+    :class=" pno==i? 'active' :'' "
+2 用对象方式绑定
+    data：{
+        xxxClassObj：{
+            fade：true/false //类名 放在一个对象属性
+            in： fade in active 都是类名
+            active：
+        }
+    }
+    :class="xxxClassObj" :class 中的类回合class中的类合并
+    ：class中，只有为true的类名，才能出现在class中
+    :class=" pno==i? 'active' :'' "
+如果是在多个元素之间，切换一个class，首选用字符串方式
+控制一个元素的class，有与没有，首选用对象方式
+
+style：2中方式
+1：作为字符串属性绑定
+2：也可以用对象方式绑定
+    和class类似
+今后所有的style都采用对象语法绑定
+
+计算属性：
+    不实际存储属性值，而是根据其他属性值动态计算获得
+    不是所有值都可以直接获得
+
+    data：{
+        
+    }
+    computed:{
+        属性名称(){
+            return 计算后的值  
+        }
+    }
+    绑定：和普通属性的绑定完全一样，{{属性名}} 不要加()
+
+    放在method里面，也是一样的，调用的时候 total()
+    计算属性 vs 函数
+    计算属性的值可以被Vue缓存并重复使用，只要计算属性依赖的其他
+    属性不改变，就不用重复计算
+    函数只要调用，就重新计算
+
+commonjs 和 es中的模块系统
+    node --common.js
+
+    commonjs：
+        module.exports= {age:10,print:function(){}}
+        const obj = require('./x')
+        只能导出一个对象
+
+    es6规范：
+        export var age = 10
+        export function print(){}
+        import{age, print} from './x'  导出多个
+
+        export default {age:10, print:function(){}}
+        import obj from './x'           导出一个
+
+        只能通过编译器工具预处理，转换成标准的js
+
+webpack：
+entry 入口
+output 输出
+loader 加载器 让webpack可以处理非js文件，如css，图片等
+mode 运行模式 可以指定为production 或者development
+ 
+ 使用过程：
+ npm init 
+ npm i webpack --save-dev 
+ // webpack 依赖的都是开发时的依赖
+
+ 配置文件：
+ webpack.config.js
+
+
+
+
+D:\web\第三阶段前端进阶\3：Vue\03： VueJS 组件
