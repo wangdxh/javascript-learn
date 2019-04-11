@@ -1,4 +1,4 @@
-vue.js 一个渐进式的，基于mvvm设计模式的javascript框架
+﻿vue.js 一个渐进式的，基于mvvm设计模式的javascript框架
 
 适用于以数据操作为主的项目
 
@@ -226,12 +226,17 @@ mode 运行模式 可以指定为production 或者development
  
  使用过程：
  npm init 
- 
+ npm i webpack --save-dev 
+ // webpack 依赖的都是开发时的依赖
+
  配置文件：
  webpack.config.js
-cnpm install webpack webpack-cli --save-dev
 
 
-npx webpack --config webpack.config.js
+
 
 D:\web\第三阶段前端进阶\3：Vue\03： VueJS 组件
+
+npm init -y
+npm install web
+npx webpack --config webpack.config.js
