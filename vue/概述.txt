@@ -168,7 +168,7 @@ interpolation {{}} 中可以包含以下几种情况的内容：
             active：
         }
     }
-    :class="xxxClassObj" :class 中的类回合class中的类合并
+    :class="xxxClassObj" :class 中的类会和class中的类合并
     ：class中，只有为true的类名，才能出现在class中
     :class=" pno==i? 'active' :'' "
 如果是在多个元素之间，切换一个class，首选用字符串方式
@@ -199,7 +199,7 @@ style：2中方式
     计算属性的值可以被Vue缓存并重复使用，只要计算属性依赖的其他
     属性不改变，就不用重复计算
     函数只要调用，就重新计算
-
+============================================
 commonjs 和 es中的模块系统
     node --common.js
 
@@ -231,12 +231,81 @@ mode 运行模式 可以指定为production 或者development
 
  配置文件：
  webpack.config.js
+ private: true
+
+npm init -y
+npm install webpack
+npx webpack --config webpack.config.js 
+npm build
+==============================================
+@click.prevent 
+location.href location.search 
+location.reload() // 不能刷新，应该修改页面的状态
+
+找到可能变化的地方，只要有变化，就有vue变量
+找到事件触发的地方，有事件，就有vue方法
+
+页面数据更新和事件的处理，初步使用vue绑定即可完成
+
+vue 自定义指令
+    除了13中预定义指令之外，还需要增强html的其他功能，就需要
+    添加自定义指令
+
+    Vue.directive("指令名",{
+        inserted(elem){ 当当前元素被挂载到dom树后，自动执行
+            // elem 当前所在元素的dom对象
+            // elem 可调用一切dom的api
+            elem.focus()
+        }
+    })
+    指令名前不要加v-前缀  focus
+    使用的使用 v-focus
+2. 过滤器 filter
+    原始数据不能直接使用时，都要用过滤器
+    比如：性别（1,0-》男,女）时间-》字符串时间
+          数据库的内容到字符串的内容
+    vue官方没有使用任何预定义的过滤器
+    创建过滤器：
+    Vue.filter("过滤器名称", function(value， 形参1，..){
+        return 加工后的值
+    })
+    只要绑定数据，都可以使用过滤器，模型变量|过滤器名称|....
+    v-text不能用过滤器 需要使用{{}}
+    过滤器参数，value，形参1，形参2
+
+3. axios
+    一个基于Promise值的支持http请求相应的函数库
+    向服务器发送ajax请求：
+        xhr对象
+        jquery中的$.ajax 大材小用，jquery封装了dom的操作
+        旧版vue中，自带了vue-resource组件，专门发送xhr
+        axios 官方推荐代替Vue-resource的
+    axios是一个单独的js文件，与平台无关，浏览器和node.js都可以
+    axios.min.js 辅助下载 qs.min.js
+    get:
+        axios.get("url", {
+            params:{
+                param1:value1
+                ...
+            }
+        }).then(function(res){
+            res.data 是直接的响应结果
+        })
+        await 和 then 只能使用一个
+        (async function(){
+            var res = await axios.get()
+            vm.res = res.data
+        })()
+
+    post:
+        axios.post("url", "变量=值&变量=值").then()
+        QS.stringify({
+            param1:value1
+        })
 
 
 
+    跨域访问的话："Access-Control-Allow-Origin":"*"
 
 D:\web\第三阶段前端进阶\3：Vue\03： VueJS 组件
 
-npm init -y
-npm install web
-npx webpack --config webpack.config.js
