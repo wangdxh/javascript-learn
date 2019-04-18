@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>kedacom</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <style>
+    *,
+    *::after,
+    *::before {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #000000;
+      color: white;
+    }
+
+    #face-detection {
+      width: 1136px;
+      min-height: 100vh;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    #face-detection .preview-list .imgs {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    #face-detection .preview-list .imgs img {
+      cursor: pointer;
+      width: 110px;
+      height: 110px;
+      opacity: 0.3;
+      margin-bottom: 10px;
+    }
+
+    #face-detection .preview-list .imgs img:hover {
+      opacity: 1;
+    }
+
+    #face-detection .preview-header {
+      margin-top: 100px;
+      height: 20px;
+      display: flex;
+      flex-direction: row;
+      position: relative;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    #face-detection .preview-header .center-text {
+      position: absolute;
+      text-align: center;
+      bottom: 26px;
+      width: 100%;
+      font-size: 20px;
+      color: #ffffff;
+    }
+
+    #face-detection .preview-header .left-text {
+      font-size: 14px;
+    }
+
+    #face-detection .sample {
+      color: #989aa4;
+    }
+
+    .api-info {
+      display: none;
+    }
+
+    #face-detection .preview-img {
+      height: 540px;
+      display: flex;
+      justify-content: center;
+    }
+
+    #face-detection .preview-img .img-area {
+      width: 466px;
+      height: 466px;
+      background-color: #1a1a20;
+      border: 1px solid #4f505c;
+      box-shadow: inset 0 1px 10px 0 rgba(0, 0, 0, 0.34);
+      display: flex;
+      justify-content: center;
+      position: relative;
+      align-items: center;
+    }
+
+    #face-detection .preview-img .img-area .img-content {
+      position: relative;
+      max-width: 446px;
+      max-height: 446px;
+    }
+
+    #face-detection .preview-img .img-area .img-content .img {
+      max-width: 446px;
+      max-height: 446px;
+    }
+
+    #face-detection .preview-img .img-area .img-content .img-mask {
+      opacity: 1;
+      position: absolute;
+      top: 0px;
+      width: 100%;
+      height: 100%;
+    }
+
+    svg:not(:root) {
+      overflow: hidden;
+    }
+
+    #face-detection .preview-footer {
+      display: flex;
+      height: 130px;
+      flex-direction: row;
+      justify-content: center;
+      padding-top: 20px;
+    }
+
+    #face-detection .preview-footer .buttons {
+      width: 320px;
+      display: flex;
+      justify-content: center;
+      position: absolute;
+    }
+
+    .g-btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 2px;
+      width: 150px;
+      height: 38px;
+      line-height: 38px;
+      font-size: 14px;
+      font-weight: 300;
+      color: white;
+      background-color: #1989fa;
+    }
+
+    .g-upload-buttons-msg {
+      position: absolute;
+      top: 50px;
+      left: 0px;
+      width: 100%;
+      text-align: center;
+      color: #989aa4;
+    }
+
+    #face-detection .preview-img .img-area .img-heads {
+      position: absolute;
+      top: 0px;
+      left: 482px;
+      height: 100%;
+      width: 330px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #face-detection .preview-img .img-area .img-heads .up-button,
+    #face-detection .preview-img .img-area .img-heads .down-button {
+      width: 90px;
+      height: 34px;
+      display: flex;
+      background-color: #34353d;
+    }
+
+    #face-detection .preview-img .img-area .img-heads .up-button span,
+    #face-detection .preview-img .img-area .img-heads .down-button span {
+      display: block;
+      margin: 0 auto;
+      margin-top: 8.5px;
+    }
+
+    #face-detection .preview-img .img-area .img-heads .down-button {
+      transform: rotate(-180deg);
+    }
+
+    #face-detection .preview-img .img-area .img-heads .heads-border {
+      position: absolute;
+      height: 100%;
+      width: 90px;
+      top: 0;
+      z-index: -1;
+      background-color: #1a1a20;
+      border: 1px solid #4f505c;
+      box-shadow: inset 0 1px 10px 0 rgba(0, 0, 0, 0.34);
+    }
+
+    #face-detection .preview-img .img-area .img-heads .heads {
+      width: 300px;
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    #face-detection .preview-img .img-area .img-heads .heads-inner {
+      width: 318px;
+      height: 100%;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #face-detection .preview-img .img-area .img-heads .head {
+      margin: 14px auto;
+      width: 276px;
+      height: 76px;
+    }
+
+    #face-detection .preview-img .img-area .img-heads .head .img-border {
+      position: absolute;
+      left: 7px;
+      width: 76px;
+      height: 76px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    #face-detection .preview-img .img-area .img-heads .head.active .img-border {
+      border: 1px solid #1989fa;
+    }
+
+    #face-detection .preview-img .img-area .img-heads .head .svg {
+      position: absolute;
+      left: 81px;
+    }
+
+    img {
+      border-style: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="face-detection">
+    <div class="preview-header">
+      <div class="center-text">功能演示</div>
+      <div class="left-text">
+        <div class="sample">示例图片</div>
+      </div>
+      <div class="space"></div>
+      <div class="api-info">
+        <a>
+          <span style="position: relative; top: 1px; margin-right: 5.7px;">
+            <svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+              <desc>Created with Sketch.</desc>
+              <defs></defs>
+              <g id="鉴黄最终稿" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g id="一张图排版" transform="translate(-1197.000000, -96.000000)" fill="#1989FA">
+                  <g id="Group-7" transform="translate(1197.000000, 93.000000)">
+                    <g id="感叹号" transform="translate(0.000000, 3.000000)">
+                      <path d="M5.99484637,0 C2.68400931,0 0,2.68395437 0,5.99479143 C0,9.30560102 2.68400931,11.9895829 5.99484637,11.9895829 C9.30568343,11.9895829 11.9896241,9.30560102 11.9896241,5.99479143 C11.9896241,2.68396811 9.30568343,0 5.99484637,0 Z M5.36229209,2.30508372 C5.5250929,2.0857867 5.73516157,1.97602147 5.99223716,1.97602147 C6.25280086,1.97602147 6.46354243,2.08580044 6.62472279,2.30508372 C6.78591687,2.5246142 6.86644526,2.81254711 6.86644526,3.16914337 C6.86644526,3.48802971 6.78937752,3.95415777 6.63500857,4.56792575 C6.62138575,4.62270537 6.61108626,4.66544144 6.60415125,4.69642235 C6.47047743,5.24501508 6.37018774,5.73516157 6.30339203,6.16706779 C6.2365002,6.59920747 6.19965544,6.98813044 6.19281656,7.33453706 L5.79684873,7.33960442 C5.78991373,6.98997062 5.75316511,6.59922121 5.68627326,6.16706779 C5.61949128,5.73516157 5.51920159,5.24501508 5.38551404,4.69642235 C5.37857903,4.66544144 5.36656295,4.62270537 5.34947952,4.56792575 C5.19522042,3.95415777 5.11802908,3.48802971 5.11802908,3.16914337 C5.11801534,2.81256084 5.19949128,2.5246142 5.36229209,2.30508372 Z M6.65305328,9.74365949 C6.47314155,9.9236948 6.25280086,10.0135614 5.99225089,10.0135614 C5.7419867,10.0135614 5.52510663,9.92184089 5.34173427,9.73856466 C5.15836192,9.55508245 5.06661395,9.33831225 5.06661395,9.08804804 C5.06661395,8.83084885 5.15744183,8.6115381 5.33916627,8.42967634 C5.5208083,8.2480343 5.73848487,8.15720642 5.99223716,8.15720642 C6.25280086,8.15720642 6.47312782,8.24734767 6.65303955,8.42710833 C6.8330474,8.60714364 6.92306506,8.82759421 6.92306506,9.08803432 C6.92307877,9.34504126 6.83306112,9.56363792 6.65305328,9.74365949 Z"
+                        id="Shape"></path>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </span>
+          <!-- react-text: 241 -->API 说明 &amp; 示例
+          <!-- /react-text -->
+        </a>
+      </div>
+    </div>
+    <div class="preview-list">
+      <div class="imgs">
+        <img v-for="(item, index) in imgs" :src="item" alt="" v-on:click="selectcurimage(index)" />
+      </div>
+    </div>
+    <div class="preview-img">
+      <div class="img-area">
+        <div style="" class="img-content">
+          <img :src="previewimgsrc" class="img" ref="mypreviewimage" @load="previewimgloaded"/>
+          <div class="img-mask">
+            <svg version="1.1" :viewBox="svgviewbox" width="100%" height="100%">
+              <g fill-rule="evenodd" fill="none" stroke-width="1" stroke="none">
+                <path v-for="(item, index) in objectlist" style="cursor: pointer;" :stroke-width="(curobjectinx == index && objectlist.length > 1) ? 4 : 2"
+                  stroke="#1989FA" :d="objectpath(index)" fill="transparent"></path>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div class="img-heads" v-show="objectlist.length > 1">
+          <div class="up-button">
+            <span>
+              <svg width="17px" height="10px" viewBox="0 0 17 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.200000003">
+                  <path d="M8.03604597,6.61897497 L1.70936773,0.292296726 C1.32278372,-0.0942872761 0.683929572,-0.0999764491 0.29340528,0.290547843 C-0.0998416753,0.683794798 -0.0963360099,1.31502012 0.295154163,1.70651029 L7.10621605,8.51757217 C7.15306042,8.61053107 7.21543405,8.69785799 7.29340528,8.77582922 C7.49707781,8.97950174 7.76829604,9.07540424 8.03604597,9.06570976 C8.30379589,9.07540424 8.57501413,8.97950174 8.77868665,8.77582922 C8.85665788,8.69785799 8.91903151,8.61053107 8.96587589,8.51757217 L15.7769378,1.70651029 C16.1684279,1.31502012 16.1719336,0.683794798 15.7786867,0.290547843 C15.3881624,-0.0999764491 14.7493082,-0.0942872761 14.3627242,0.292296726 L8.03604597,6.61897497 Z"
+                    id="Combined-Shape-Copy" fill="#9293A1" transform="translate(8.036046, 4.533189) scale(-1, -1) translate(-8.036046, -4.533189) "></path>
+                </g>
+              </svg>
+            </span>
+          </div>
+          <div class="heads-border"></div>
+          <div class="heads">
+            <div class="heads-inner">
+              <div v-for="(item, index) in objectlist" class="head" :class="index==curobjectinx? 'active':''">
+                <div class="img-border">
+                  <img :style="objectimgstyle(index)" :src="previewimgsrc" class="img" v-on:click="selectobject(index)" />
+                </div>
+
+                <div class="svg"></div>
+              </div>
+            </div>
+          </div>
+          <div class="down-button">
+            <span>
+              <svg width="17px" height="10px" viewBox="0 0 17 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.200000003">
+                  <path d="M8.03604597,6.61897497 L1.70936773,0.292296726 C1.32278372,-0.0942872761 0.683929572,-0.0999764491 0.29340528,0.290547843 C-0.0998416753,0.683794798 -0.0963360099,1.31502012 0.295154163,1.70651029 L7.10621605,8.51757217 C7.15306042,8.61053107 7.21543405,8.69785799 7.29340528,8.77582922 C7.49707781,8.97950174 7.76829604,9.07540424 8.03604597,9.06570976 C8.30379589,9.07540424 8.57501413,8.97950174 8.77868665,8.77582922 C8.85665788,8.69785799 8.91903151,8.61053107 8.96587589,8.51757217 L15.7769378,1.70651029 C16.1684279,1.31502012 16.1719336,0.683794798 15.7786867,0.290547843 C15.3881624,-0.0999764491 14.7493082,-0.0942872761 14.3627242,0.292296726 L8.03604597,6.61897497 Z"
+                    id="Combined-Shape-Copy" fill="#9293A1" transform="translate(8.036046, 4.533189) scale(-1, -1) translate(-8.036046, -4.533189) "></path>
+                </g>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="preview-footer">
+      <div class="buttons">
+        <div class="" @click="clickupload">
+          <button class="g-btn">上传本地图片</button>
+          <div class="g-upload-buttons-msg">我们不会存储您上传的图片</div>
+          <input ref="uploadfile" @change="upload" type="file" accept="image/jpeg, image/png" style="display: none" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var vm = new Vue({
+      el: "#face-detection",
+      data: {
+        imgs: [
+          "https://ors35x6a7.qnssl.com/atshow-face-detection-20170703/1.png?imageslim",
+          "https://ors35x6a7.qnssl.com/atshow-face-detection-20170703/2.png?imageslim",
+          "https://ors35x6a7.qnssl.com/atshow-face-detection-20170703/3.png?imageslim",
+          "https://ors35x6a7.qnssl.com/atshow-face-detection-20170703/4.png?imageslim",
+          "https://ors35x6a7.qnssl.com/atshow-face-detection-20170703/5.png?imageslim",
+          "https://ors35x6a7.qnssl.com/atshow-face-detection-20170703/6.png?imageslim",
+          "https://ors35x6a7.qnssl.com/atshow-face-detection-20170703/7.png?imageslim",
+          "https://ors35x6a7.qnssl.com/atshow-face-detection-20170703/8.png?imageslim",
+          "https://ors35x6a7.qnssl.com/atshow-face-detection-20170703/9.png?imageslim",
+          "https://ors35x6a7.qnssl.com/atshow-face-detection-20170703/10.png?imageslim"
+        ],
+        objectlist: [],
+        curobjectinx: 0,
+        previewimgsrc: '',
+        svgviewbox: "0 0 446 446",
+
+        imgwidth:0,
+        imgheight:0,
+        tempobjectlist:null,
+        tmpcurimgtag:0
+      },
+      methods: {
+        clickupload:function () {
+          this.$refs.uploadfile.click()
+        },
+        previewimgloaded(){
+          console.log('loaded', this.$refs.mypreviewimage.naturalHeight, this.$refs.mypreviewimage.naturalWidth)
+        
+          this.imgwidth = this.$refs.mypreviewimage.naturalWidth
+          this.imgheight = this.$refs.mypreviewimage.naturalHeight
+          // 设置 svg viewport 为正常的宽高
+          this.svgviewbox = `0 0 ${this.imgwidth} ${this.imgheight}`
+
+          this.dealobjects(this.tmpcurimgtag)          
+        },
+        dealobjects(tag){
+          if (tag == this.tmpcurimgtag && this.tempobjectlist && this.imgwidth && this.imgheight)
+          {
+              this.curobjectinx = 0
+              this.objectlist = []
+              // imgwidth and imgheight have got
+              for (let inx = 0; inx < this.tempobjectlist.faces.length; inx++) {
+                  const item = this.tempobjectlist.faces[inx];
+                  let xscale = 446/this.imgwidth
+                  let yscale = 446/this.imgheight
+                  let scale = xscale > yscale? yscale : xscale
+                  if (xscale > 1.0 && yscale > 1.0) {
+                    scale = 1
+                  }
+                  this.objectlist.push({
+                    left: item.face_rectangle.left*scale,
+                    top: item.face_rectangle.top*scale,
+                    right:(item.face_rectangle.left+item.face_rectangle.width)*scale,
+                    bottom:(item.face_rectangle.top+item.face_rectangle.height)*scale
+                  });
+                }
+              this.tempobjectlist = null
+          }
+        },
+        getfaceresult(url, urldata){
+          
+          let tag = ++this.tmpcurimgtag
+
+          // send axios 
+          let formdata = new FormData();
+          formdata.append("api_key","YHlShnzToe1pqvnTXTYupi5Fst0kMnkC")
+          formdata.append("api_secret","fYBk6261SF-NjJUrJjp1-rZBO8p9JJBq")
+          formdata.append("return_landmark", 0)
+          //formdata.append("image_url","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555339400025&di=61165fb9d80035d89ad21450ab403966&imgtype=0&src=http%3A%2F%2Fsports.sina.com.cn%2Fn.sinaimg.cn%2Fsports%2Ftransform%2F283%2Fw650h433%2F20190216%2FSt1O-htacqwv8021210.jpg")
+          formdata.append(url, urldata)
+          let config = {
+            headers:{
+              'Content-Type':'multipart/form-data'
+            }
+          }
+          axios.post('https://api-cn.faceplusplus.com/facepp/v3/detect',formdata, config)
+          .then((res)=>{
+            console.log(res.data)
+            if (tag != this.tmpcurimgtag) {
+              console.log('error tag: ', tag, this.tmpcurimgtag)
+              return
+            }
+            //let data = 
+            this.tempobjectlist = res.data
+             this.dealobjects(tag)
+          })
+          .catch((err)=>{
+            console.log(tag, this.tmpcurimgtag, err)
+            alert(err.message)
+          })
+
+        },
+        clear(){
+          this.objectlist = []
+          this.tempobjectlist = null
+          this.imgwidth = 0
+          this.imgheight = 0
+          this.curobjectinx = 0;
+        },
+        setimgsrc(newsrc){
+          let temp = this.previewimgsrc
+          this.previewimgsrc = newsrc
+          if (0 == temp.indexOf('blob:null')) {
+            window.URL.revokeObjectURL(temp)      
+            console.log('clear old blob img src', temp)      
+          }
+        },
+        upload(event){
+          let files = event.target.files || event.dataTransfer.files
+          if (!files.length) {
+            return
+          }
+          this.clear()
+          console.log('before set preview src')
+          this.setimgsrc(window.URL.createObjectURL(files[0]))
+          console.log('after set preview src')
+
+          this.getfaceresult("image_file", files[0])
+          this.$refs.uploadfile.value = null
+        },
+
+        selectcurimage:function (i) {
+          this.clear()
+          this.setimgsrc(this.imgs[i])
+          
+          this.getfaceresult('image_url', this.imgs[i])
+        },
+
+        selectobject: function (index) {
+          this.curobjectinx = index;
+        },
+
+        objectpath: function (index) {
+          let item = this.objectlist[index];
+          let i = index == this.curobjectinx ? 14 : 12;
+          return `M${item.left - i},${item.top - i} L${item.right +
+            i},${item.top - i} L${item.right + i},${item.bottom +
+            i} L${item.left - i},${item.bottom + i} Z`;
+        },
+
+        objectimgstyle(index) {
+          let xscale = 446/this.imgwidth
+          let yscale = 446/this.imgheight
+          let scale = xscale > yscale? yscale : xscale
+
+          let item = this.objectlist[index];
+          let left = (item.left + item.right) / 2 - 38;
+          let top = (item.top + item.bottom) / 2 - 38;
+          if (xscale > 1.0 && yscale > 1.0) {
+            return `width: ${this.imgwidth}px; height: ${this.imgheight}px; transform: translateX(-${left}px) translateY(-${top}px);`;  
+          }
+
+          if (scale == xscale) {
+            let height = this.imgheight * scale;
+            return `width: 446px; height: ${height}px; transform: translateX(-${left}px) translateY(-${top}px);`;  
+          }
+          else{
+            let width = this.width * scale;
+            return `width: ${width}px; height: 446px; transform: translateX(-${left}px) translateY(-${top}px);`;  
+          }          
+        }
+      },
+      mounted() {
+        this.selectcurimage(0);
+      },
+      computed: {}
+    });
+  </script>
+</body>
+
+</html>

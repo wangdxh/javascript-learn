@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>compare test</title>
+    <!--
+        禁用响应式布局
+        1 删除viewport meta信息
+        2 设置container宽度 !important
+        3 如果采用了导航栏 要删除掉菜单在移动端的折叠样式展开
+          通过删除折叠菜单 通过button的 navbar-toggle来实现
+        4 栅栏布局 采用最小设备的栅栏来进行布局
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+
+</head>
+<style>
+    .container {
+        width: 1140px !important;
+        /*min-width:1140px;*/
+        max-width: none !important;
+        /*height: 700px;*/
+        /*background-color:black;*/
+    }
+
+    .row .container {
+        width: 100% !important;
+    }
+
+    p {
+        margin: 0 0 0 0;
+    }
+
+    textarea:focus {
+        outline: none;
+        border: 0;
+    }
+
+    textarea {
+        width: 100%;
+        height: 400px;
+        resize: none;
+        border: 0;
+    }
+</style>
+
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mt-4 mb-3">
+                <h2 class="text-center">功能演示</h2>
+                <p class="text-center fond-weight-light">
+                    <span>即刻体验Face++的人脸比对能力。请上传本地图片或提供图片URL。</span>
+                </p>
+                <p class="text-center fond-weight-light">
+                    <span>该功能演示是基于Compare API搭建的。如果您对技术能力有特别要求，请查看下方的产品目录或联系我们。</span>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8">
+
+                <div class="container mt-4">
+                    <div class="row">
+                        <div class="col-6">
+                            <img class="mx-auto border border-danger mr-1 w-100" src="https://ors35x6a7.qnssl.com/atshow-face-detection-20170703/3.png?imageslim"
+                                alt="">
+                        </div>
+                        <div class="col-6">
+                            <img class=" mx-auto w-100" src="https://ors35x6a7.qnssl.com/atshow-face-detection-20170703/4.png?imageslim" alt="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            图片列表
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <input type="button" value="本地上传" class="btn btn-info btn-sm" style="width:150px">
+                        </div>
+
+                        <div class="col-8">
+                            <form>
+                                <div class="input-group mb-3 input-group-sm">
+                                    <input type="text" class="form-control" placeholder="image url">
+                                    <div class="input-group-append">
+                                        <input type="button" value="确认" class="btn btn-info pl-4 pr-4">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+
+
+
+
+            </div>
+            <div class="col-4">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="home" aria-selected="true">
+                            <h6>比对结果</h6>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="profile" aria-selected="false">
+                            <h6>Response JSON</h6>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content border border-top-0" id="myTabContent">
+                    <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="home-tab">
+                        <textarea name="" id="" readonly>
+                                    结果基本类似
+                                </textarea>
+                    </div>
+                    <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="profile-tab">
+                        <textarea name="" id="" readonly>
+                                            json data
+                                        </textarea>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</body>
+
+</html>

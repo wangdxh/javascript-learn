@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>kedacom video face</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <style>
+    *,
+    *::after,
+    *::before {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #000000;
+      color: white;
+    }
+
+    #face-detection {
+      width: 1136px;
+      min-height: 100vh;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    #face-detection .preview-header {
+      margin-top: 100px;
+      height: 45px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      /*position: relative;*/
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    #face-detection .preview-header .center-text {
+      /*position: absolute;*/
+      text-align: center;
+      /*bottom: 26px;*/
+      width: 100%;
+      font-size: 20px;
+      color: #ffffff;
+    }
+
+    #face-detection .preview-header .left-text {
+      font-size: 14px;
+      /*position: absolute;*/
+      text-align: center;
+      width: 100%;
+    }
+
+    #face-detection .sample {
+      color: #989aa4;
+    }
+
+    #face-detection .preview-img {
+      /*height: 540px;*/
+      display: flex;
+      /*justify-content: center;*/
+      align-items: center;
+      flex-direction: column;
+    }
+
+    #face-detection .preview-img .img-area {
+      width: 480px;
+      height: 320px;
+      background-color: #1a1a20;
+      border: 1px solid #4f505c;
+      box-shadow: inset 0 1px 10px 0 rgba(0, 0, 0, 0.34);
+      display: flex;
+      justify-content: center;
+      /*position: relative;*/
+      align-items: center;
+    }
+
+    #face-detection .preview-img .img-area .img-content {
+      position: relative;
+      max-width: 480px;
+      max-height: 320px;
+    }
+
+    #face-detection .preview-img .img-area .img-content .video {
+      max-width: 480px;
+      max-height: 320px;
+    }
+
+    #face-detection .preview-img .img-area .img-content .img-mask {
+      opacity: 1;
+      position: absolute;
+      top: 0px;
+      width: 100%;
+      height: 100%;
+    }
+
+    #face-detection .preview-img .canvas {
+      display: none
+    }
+
+    svg:not(:root) {
+      overflow: hidden;
+    }
+
+    #face-detection .preview-footer {
+      display: flex;
+      height: 130px;
+      flex-direction: row;
+      justify-content: center;
+      padding-top: 20px;
+    }
+
+    #face-detection .preview-footer .buttons {
+      width: 480px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      /*position: absolute;*/
+    }
+
+    .g-btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 2px;
+      width: 150px;
+      height: 38px;
+      line-height: 38px;
+      font-size: 14px;
+      font-weight: 300;
+      color: white;
+      background-color: #1989fa;
+    }
+
+    .g-upload-buttons-msg {
+      /*position: absolute;
+      top: 50px;
+      left: 0px;*/
+      width: 100%;
+      text-align: center;
+      color: #989aa4;
+    }
+
+    img {
+      border-style: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="face-detection">
+    <div class="preview-header">
+      <div class="center-text">功能演示</div>
+      <div class="left-text">
+        <div class="sample">示例图片</div>
+      </div>
+      <div class="space"></div>
+
+    </div>
+
+    <div class="preview-img">
+      <div class="img-area">
+        <div style="" class="img-content">
+
+          <video class="video" id="video" width="480" height="320" controls></video>
+
+          <div class="img-mask">
+            <canvas id="canvasmask" width="480" height="320"></canvas>
+          </div>
+
+        </div>
+      </div>
+      <canvas class="canvas" id="canvas" width="480" height="320"></canvas>
+    </div>
+
+    <div class="preview-footer">
+      <div class="buttons">        
+          <button class="g-btn" @click="operatortimer" v-text="btimeron ? '停止定时器': '开启定时器'"></button>
+          <button class="g-btn" @click="clickupload">选取这张</button>
+          <div class="g-upload-buttons-msg">some test text</div>        
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function getUserMedia(constraints, success, error) {
+      if (navigator.mediaDevices.getUserMedia) {
+        //最新的标准API
+        navigator.mediaDevices.getUserMedia(constraints).then(success).catch(error);
+      } else if (navigator.webkitGetUserMedia) {
+        //webkit核心浏览器
+        navigator.webkitGetUserMedia(constraints, success, error)
+      } else if (navigator.mozGetUserMedia) {
+        //firfox浏览器
+        navigator.mozGetUserMedia(constraints, success, error);
+      } else if (navigator.getUserMedia) {
+        //旧版API
+        navigator.getUserMedia(constraints, success, error);
+      }
+    }
+
+    var vm = new Vue({
+      el: "#face-detection",
+      data: {
+        tmpcurimgtag: 0,
+        objectlist: [],
+        timerfacedetect: null,
+        btimeron:false,
+      },
+      methods: {
+        operatortimer(){
+          this.btimeron = !this.btimeron
+          this.btimeron? this.settimer() : this.cleartimer();
+        },
+        clickupload: function () {
+          console.log('click')
+          let video = document.getElementById('video');
+          let canvas = document.getElementById('canvas');
+          let ctx = canvas.getContext('2d')
+
+          ctx.drawImage(video, 0, 0, 480, 320);
+
+          canvas.toBlob(this.blobcallback, "image/jpeg", 0.95)
+        },
+
+        blobcallback(blob) {
+          console.log('get blob')
+          this.getfaceresult('image_file', blob)
+        },
+
+        getfaceresult(url, urldata) {
+          let tag = ++this.tmpcurimgtag
+          // send axios 
+          let formdata = new FormData();
+          formdata.append("api_key", "YHlShnzToe1pqvnTXTYupi5Fst0kMnkC")
+          formdata.append("api_secret", "fYBk6261SF-NjJUrJjp1-rZBO8p9JJBq")
+          formdata.append("return_landmark", 0)
+          //formdata.append("image_url","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555339400025&di=61165fb9d80035d89ad21450ab403966&imgtype=0&src=http%3A%2F%2Fsports.sina.com.cn%2Fn.sinaimg.cn%2Fsports%2Ftransform%2F283%2Fw650h433%2F20190216%2FSt1O-htacqwv8021210.jpg")
+          formdata.append(url, urldata)
+          let config = {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+          axios.post('https://api-cn.faceplusplus.com/facepp/v3/detect', formdata, config)
+            .then((res) => {
+              console.log(res.data)
+              if (tag != this.tmpcurimgtag) {
+                console.log('error tag: ', tag, this.tmpcurimgtag)
+                return
+              }
+              this.objectlist = []
+
+              for (let inx = 0; inx < res.data.faces.length; inx++) {
+                const item = res.data.faces[inx];
+
+                this.objectlist.push(item.face_rectangle
+                  /*{
+                    left: item.face_rectangle.left*scale,
+                    top: item.face_rectangle.top*scale,
+                    right:(item.face_rectangle.left+item.face_rectangle.width)*scale,
+                    bottom:(item.face_rectangle.top+item.face_rectangle.height)*scale
+                  }*/);
+              }
+              this.drawfacerect()
+            })
+            .catch((err) => {
+              console.log(tag, this.tmpcurimgtag, err)
+              alert(err.message)
+            })
+
+        },
+        drawfacerect() {
+          let canvas = document.getElementById('canvasmask');
+          let ctx = canvas.getContext('2d')
+          ctx.lineWidth = 2
+          ctx.strokeStyle = 'blue'
+          ctx.clearRect(0, 0, 480, 320)
+          for (const iter of this.objectlist) {
+            ctx.strokeRect(iter.left, iter.top, iter.width, iter.height)// x, y width height  
+          }
+
+        },
+        settimer() {
+          if (!this.timerfacedetect) {
+            console.log('settimer')
+            this.timerfacedetect = setInterval(() => {
+              this.clickupload()
+
+            }, 2000)
+          }
+        },
+        cleartimer() {
+          if (this.timerfacedetect) {
+            clearInterval(this.timerfacedetect)
+            this.timerfacedetect = null
+          }
+        },
+        success(stream) {
+          //将视频流设置为video元素的源
+          console.log(stream);
+          let video = document.getElementById('video');
+          video.srcObject = stream;
+          video.play();
+
+          video.addEventListener("playing", ()=>{
+            //this.settimer()
+
+          }, false);
+        },
+        error(error) {
+          console.log(`访问用户媒体设备失败${error.name}, ${error.message}`);
+        }
+      },
+      mounted() {
+        if (navigator.mediaDevices.getUserMedia || navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia) {
+          //调用用户媒体设备, 访问摄像头
+          getUserMedia({ video: { width: 480, height: 320 } }, this.success, this.error);
+        } else {
+          alert('不支持访问用户媒体');
+        }
+      },
+      unmounted() {
+        this.cleartimer()
+      },
+      computed: {}
+    });
+  </script>
+</body>
+
+</html>
