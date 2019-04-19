@@ -48,28 +48,83 @@
         border: 0;
     }
 
+
     .imageslist {
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
-        justify-content: space-between;
-        align-items: flex-start;
-        overflow: hidden;
+        height: 90px;
+        justify-content: space-around;
+        align-items: center;
+        /*height:100px;*/
         background-color: grey;
-    }
+        margin: 2 2 2 2;
 
-    .imageslist .imgbox {
-        width: 110px;
-        height: 110px;
     }
 
     .imageslist .img {
         cursor: pointer;
-        width: 100%;
-        height: 100%;
+        width: 76px;
+        height: 76px;
         opacity: 0.3;
-        margin-bottom: 10px;
+
     }
+
+    .imageslist .img:hover {
+        opacity: 0.6;
+    }
+
+    .imageslist .img.active {
+        border: 1px solid #1989fa;
+        opacity: 1;
+    }
+
+    .mybox .myboxinner{
+        width:500;
+        height:76px;
+    }
+    .mybox{
+        overflow: hidden;
+        box-sizing: content-box;
+    }
+    .myboxinner{        
+        /*white-space: nowrap;*/
+        background-color: black;
+        overflow-y:hidden;
+        overflow-x:visible;
+    }
+    .myimgbox{
+
+    }
+    .myimg{
+        width:76px;
+        height:76px;
+        margin: 0px 0px 0px 0px;
+        padding: 0px 0px 0px 0px;
+    }
+
+     
+.outer-container,.content {
+    width: 500px; height: 76px;
+}
+.outer-container {
+    /*position: relative;*/
+    overflow: hidden;
+}
+.inner-container {
+    /*position: absolute; left: 0;*/
+    overflow-x: scroll;
+    overflow-y: auto;
+}
+
+.content{
+    white-space: nowrap;
+}
+
+ /* for Chrome */
+/*.inner-container::-webkit-scrollbar {
+    display: none;
+}*/
 </style>
 
 <body>
@@ -87,9 +142,8 @@
         </div>
         <div class="row">
             <div class="col-8">
-
                 <div class="container mt-4">
-                    <div class="row">
+                    <div class="row mb-3">
                         <div class="col-6">
                             <img class="mx-auto border border-danger mr-1 w-100" src="https://ors35x6a7.qnssl.com/atshow-face-detection-20170703/3.png?imageslim"
                                 alt="">
@@ -100,111 +154,140 @@
                     </div>
                     <div class="row">
                         <div class="col-12 mb-3">
-                            <div class="d-flex flex-row flex-nowrap justify-content-between ">
-                                    <button class="btn btn-info ">&lt;</button>
-
-
-                                    <button class="btn btn-info ">&gt;</button>
-
-                            </div>
-                            
-
                             <div class="imageslist">
-                                <div class="imgbox">
-                                    <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg" alt="">
-                                </div>
-                                <div class="imgbox">
-                                    <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-                                </div>
-
-                                <div class="imgbox">
-                                    <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-                                </div>
-
-                                <div class="imgbox">
-                                    <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-                                </div>
+                                <!-- <div class="imagelistbox">-->
+                                <img class="img active" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg" alt="">
 
 
-                                <div class="imgbox">
-                                    <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-                                </div>
+                                <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
 
-                                <div class="imgbox">
-                                    <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-                                </div>
-                                <div class="imgbox">
-                                    <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-                                </div>
-                                <div class="imgbox">
-                                    <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-                                </div>
+                                <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
 
-                                <div class="imgbox">
-                                    <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg" alt="">
-                                </div>
+                                <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+
+                                <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+
+                                <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+
+                                <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+
+                                <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg" alt="">
+
+
                             </div>
+
                         </div>
 
-                        
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-4">
-                        <input type="button" value="本地上传" class="btn btn-info btn-sm" style="width:150px">
                     </div>
 
-                    <div class="col-8">
-                        <form>
-                            <div class="input-group mb-3 input-group-sm">
-                                <input type="text" class="form-control" placeholder="image url">
-                                <div class="input-group-append">
-                                    <input type="button" value="确认" class="btn btn-info pl-4 pr-4">
+                    <div class="row">
+                        <div class="col-4">
+                            <input type="button" value="本地上传" class="btn btn-info btn-sm" style="width:150px">
+                        </div>
+
+                        <div class="col-8">
+                            <form>
+                                <div class="input-group mb-3 input-group-sm">
+                                    <input type="text" class="form-control" placeholder="image url">
+                                    <div class="input-group-append">
+                                        <input type="button" value="确认" class="btn btn-info pl-4 pr-4">
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
+
                     </div>
 
                 </div>
 
             </div>
-
-
-
-
-
-
-        </div>
-        <div class="col-4">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="home" aria-selected="true">
-                        <h6>比对结果</h6>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="profile" aria-selected="false">
-                        <h6>Response JSON</h6>
-                    </a>
-                </li>
-            </ul>
-            <div class="tab-content border border-top-0" id="myTabContent">
-                <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="home-tab">
-                    <textarea name="" id="" readonly>
+            <div class="col-4">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="home" aria-selected="true">
+                            <h6>比对结果</h6>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="profile" aria-selected="false">
+                            <h6>Response JSON</h6>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content border border-top-0" id="myTabContent">
+                    <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="home-tab">
+                        <textarea name="" id="" readonly>
                                     结果基本类似
                                 </textarea>
-                </div>
-                <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="profile-tab">
-                    <textarea name="" id="" readonly>
+                    </div>
+                    <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="profile-tab">
+                        <textarea name="" id="" readonly>
                                             json data
                                         </textarea>
+                    </div>
                 </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div id="mytest">
+        <h1>divtest</h1>
+        <div class="mybox">
+            <div class="myboxinner">
+                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg" alt="">
+
+
+                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+
+                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+
+                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+
+                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+
+                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+
+                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+
+                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg" alt="">
             </div>
 
         </div>
+        <h1>sssssssssssssssssssssssss</h1>
     </div>
 
+    <h1>test2</h1>
+    <div class="outer-container" id="mytest3">
+            <div class="inner-container">
+               <div class="content" id="mycontent">
+                    <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg" alt="">
+
+
+                    <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+    
+                    <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+    
+                    <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+    
+                    <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+    
+                    <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+                    <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+                    <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+    
+                    <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+    
+                    <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg" alt="">
+                    <img id="lastone" class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg" alt="">
+               </div>
+            </div>
     </div>
+    <h1>test3</h1>
+
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
     <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -213,6 +296,32 @@
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+        var vm = new Vue({
+            el:"#mytest3",
+            data:{
+
+            },
+
+            mounted() {
+                setTimeout(()=>{
+                var iner = document.getElementById('mycontent')
+                console.log(iner.scrollLeft, iner.scrollTop, iner.scrollWidth, iner.scrollHeight,  iner.clientWidth, iner.clientHeight)
+                iner.scrollTo(300, 0)
+                iner.scrollLeft = 800
+                
+                document.getElementById('lastone').scrollIntoView()
+
+                console.log(iner.scrollLeft, iner.scrollTop, iner.scrollWidth, iner.scrollHeight,  iner.clientWidth, iner.clientHeight)
+                }, 5000)
+                
+                evt.initKeyEvent("keyright",false,true,document.defaultView,false,false,false,false,97,97);
+				iner.dispatchEvent(evt);
+                
+            },
+        })
+    </script>
 </body>
 
 </html>
