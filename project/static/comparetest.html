@@ -54,7 +54,7 @@
         flex-direction: row;
         flex-wrap: nowrap;
         height: 90px;
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: center;
         /*height:100px;*/
         background-color: grey;
@@ -79,56 +79,43 @@
         opacity: 1;
     }
 
-    .mybox .myboxinner{
-        width:500;
-        height:76px;
+    .outer-container,
+    .content {
+        width: 610px;
+        height: 76px;
     }
-    .mybox{
+
+    .outer-container {
+        position: relative;
         overflow: hidden;
-        box-sizing: content-box;
-    }
-    .myboxinner{        
-        /*white-space: nowrap;*/
-        background-color: black;
-        overflow-y:hidden;
-        overflow-x:visible;
-    }
-    .myimgbox{
-
-    }
-    .myimg{
-        width:76px;
-        height:76px;
-        margin: 0px 0px 0px 0px;
-        padding: 0px 0px 0px 0px;
     }
 
-     
-.outer-container,.content {
-    width: 500px; height: 76px;
-}
-.outer-container {
-    /*position: relative;*/
-    overflow: hidden;
-}
-.inner-container {
-    /*position: absolute; left: 0;*/
-    overflow-x: scroll;
-    overflow-y: auto;
-}
+    .inner-container {
+        position: absolute;
+        left: 0;
+        overflow-x: scroll;
+        overflow-y: auto;
+    }
 
-.content{
-    white-space: nowrap;
-}
+    .content {
+        white-space: nowrap;
+    }
 
- /* for Chrome */
-/*.inner-container::-webkit-scrollbar {
+    .myimg {
+        cursor: pointer;
+        width: 76px;
+        height: 76px;
+    }
+
+    /* for Chrome */
+
+    /*.inner-container::-webkit-scrollbar {
     display: none;
 }*/
 </style>
 
 <body>
-    <div class="container">
+    <div class="container" id="facecompare">
         <div class="row">
             <div class="col-12 mt-4 mb-3">
                 <h2 class="text-center">功能演示</h2>
@@ -154,27 +141,33 @@
                     </div>
                     <div class="row">
                         <div class="col-12 mb-3">
+
                             <div class="imageslist">
-                                <!-- <div class="imagelistbox">-->
-                                <img class="img active" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg" alt="">
 
+                                <button class="btn btn-info btn-sm h-75"> &lt;</button>
 
-                                <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+                                <div class="outer-container">
+                                    <div class="inner-container">
+                                        <div class="content">
+                                            <img class="img active" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic28.jpg" alt="">
+                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic29.jpg" alt="">
+                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic30.jpg" alt="">
+                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic31.jpg" alt="">
+                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic32.jpg" alt="">
+                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic33.jpg" alt="">
+                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic34.jpg" alt="">
+                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
+                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg" alt="">
+                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic37.jpg" alt="">
+                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic38.jpg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
 
-                                <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-
-                                <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-
-                                <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-
-                                <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-
-                                <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-
-                                <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg" alt="">
-
+                                <button class="btn btn-info btn-sm h-75"> &gt;</button>
 
                             </div>
+
 
                         </div>
 
@@ -232,61 +225,36 @@
 
     </div>
 
-    <div id="mytest">
-        <h1>divtest</h1>
-        <div class="mybox">
-            <div class="myboxinner">
-                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg" alt="">
-
-
-                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-
-                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-
-                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-
-                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-
-                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-
-                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-
-                <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg" alt="">
-            </div>
-
-        </div>
-        <h1>sssssssssssssssssssssssss</h1>
-    </div>
-
-    <h1>test2</h1>
-    <div class="outer-container" id="mytest3">
+    <div style="display:none">
+        <h1>test2</h1>
+        <div class="outer-container" id="mytest3">
             <div class="inner-container">
-               <div class="content" id="mycontent">
+                <div class="content" id="mycontent">
+
                     <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg" alt="">
 
+                    <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
 
                     <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-    
+
                     <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-    
+
                     <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-    
-                    <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-    
+
                     <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
                     <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
                     <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-    
+
                     <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-    
+
                     <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg" alt="">
                     <img id="lastone" class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg" alt="">
-               </div>
+                </div>
             </div>
+        </div>
+        <h1>test3</h1>
     </div>
-    <h1>test3</h1>
+
 
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -299,26 +267,14 @@
 
     <script>
         var vm = new Vue({
-            el:"#mytest3",
-            data:{
-
+            el: "#facecompare",
+            data: {
+                imglist:[
+                    
+                ],
             },
-
             mounted() {
-                setTimeout(()=>{
-                var iner = document.getElementById('mycontent')
-                console.log(iner.scrollLeft, iner.scrollTop, iner.scrollWidth, iner.scrollHeight,  iner.clientWidth, iner.clientHeight)
-                iner.scrollTo(300, 0)
-                iner.scrollLeft = 800
-                
-                document.getElementById('lastone').scrollIntoView()
 
-                console.log(iner.scrollLeft, iner.scrollTop, iner.scrollWidth, iner.scrollHeight,  iner.clientWidth, iner.clientHeight)
-                }, 5000)
-                
-                evt.initKeyEvent("keyright",false,true,document.defaultView,false,false,false,false,97,97);
-				iner.dispatchEvent(evt);
-                
             },
         })
     </script>
