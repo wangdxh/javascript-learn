@@ -190,7 +190,7 @@
 
   <script>
     function getUserMedia(constraints, success, error) {
-      if (navigator.mediaDevices.getUserMedia) {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         //最新的标准API
         navigator.mediaDevices.getUserMedia(constraints).then(success).catch(error);
       } else if (navigator.webkitGetUserMedia) {
@@ -282,7 +282,11 @@
           ctx.lineWidth = 2
           ctx.strokeStyle = 'blue'
           ctx.clearRect(0, 0, 480, 320)
-          for (const iter of this.objectlist) {
+          /*for (const iter of this.objectlist) {
+            ctx.strokeRect(iter.left, iter.top, iter.width, iter.height)// x, y width height  
+          }*/
+          for (let index = 0; index < this.objectlist.length; index++) {
+            const iter = this.objectlist[index];
             ctx.strokeRect(iter.left, iter.top, iter.width, iter.height)// x, y width height  
           }
 
@@ -319,11 +323,11 @@
         }
       },
       mounted() {
-        if (navigator.mediaDevices.getUserMedia || navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia) {
+        if ((navigator.mediaDevices && navigator.mediaDevices.getUserMedia) || navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia) {
           //调用用户媒体设备, 访问摄像头
           getUserMedia({ video: { width: 480, height: 320 } }, this.success, this.error);
         } else {
-          alert('不支持访问用户媒体');
+          alert('不支持摄像头访问用户媒体');
         }
       },
       unmounted() {
