@@ -81,7 +81,7 @@
 
     .outer-container,
     .content {
-        width: 610px;
+        width: 640px;
         height: 76px;
     }
 
@@ -132,11 +132,11 @@
                 <div class="container mt-4">
                     <div class="row mb-3">
                         <div class="col-6">
-                            <img class="mx-auto border border-danger mr-1 w-100" src="https://ors35x6a7.qnssl.com/atshow-face-detection-20170703/3.png?imageslim"
+                            <img class="mx-auto mr-1 w-100" :class=" curbigimginx==0 ? 'border border-danger':''" :src="bigimglist[0]" @click="clickbigimg(0)"
                                 alt="">
                         </div>
                         <div class="col-6">
-                            <img class=" mx-auto w-100" src="https://ors35x6a7.qnssl.com/atshow-face-detection-20170703/4.png?imageslim" alt="">
+                            <img class=" mx-auto w-100" :class=" curbigimginx==1 ? 'border border-danger':''" :src="bigimglist[1]" alt="" @click="clickbigimg(1)">
                         </div>
                     </div>
                     <div class="row">
@@ -144,27 +144,18 @@
 
                             <div class="imageslist">
 
-                                <button class="btn btn-info btn-sm h-75"> &lt;</button>
+                                <button class="btn btn-info btn-sm h-75" @click="clickleftbtn"> &lt;</button>
 
                                 <div class="outer-container">
                                     <div class="inner-container">
                                         <div class="content">
-                                            <img class="img active" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic28.jpg" alt="">
-                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic29.jpg" alt="">
-                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic30.jpg" alt="">
-                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic31.jpg" alt="">
-                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic32.jpg" alt="">
-                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic33.jpg" alt="">
-                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic34.jpg" alt="">
-                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
-                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg" alt="">
-                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic37.jpg" alt="">
-                                            <img class="img" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic38.jpg" alt="">
+                                            <img v-for="(item, index) in imglists" class="img m-1" :class="curimgindex==index? 'active' : '' " :src="item" @click="clickimglist(index)"
+                                                alt="">
                                         </div>
                                     </div>
                                 </div>
 
-                                <button class="btn btn-info btn-sm h-75"> &gt;</button>
+                                <button class="btn btn-info btn-sm h-75" @click="clickrightbtn"> &gt;</button>
 
                             </div>
 
@@ -181,9 +172,9 @@
                         <div class="col-8">
                             <form>
                                 <div class="input-group mb-3 input-group-sm">
-                                    <input type="text" class="form-control" placeholder="image url">
+                                    <input type="text" class="form-control" placeholder="image url" v-model="imgurl">
                                     <div class="input-group-append">
-                                        <input type="button" value="确认" class="btn btn-info pl-4 pr-4">
+                                        <input type="button" value="确认" class="btn btn-info pl-4 pr-4" @click="clickseturl">
                                     </div>
                                 </div>
                             </form>
@@ -209,14 +200,10 @@
                 </ul>
                 <div class="tab-content border border-top-0" id="myTabContent">
                     <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="home-tab">
-                        <textarea name="" id="" readonly>
-                                    结果基本类似
-                                </textarea>
+                        <textarea name="" id="" readonly v-text="compareresult"></textarea>
                     </div>
                     <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="profile-tab">
-                        <textarea name="" id="" readonly>
-                                            json data
-                                        </textarea>
+                        <textarea name="" id="" readonly v-text="comparejsondata"></textarea>
                     </div>
                 </div>
 
@@ -230,7 +217,6 @@
         <div class="outer-container" id="mytest3">
             <div class="inner-container">
                 <div class="content" id="mycontent">
-
                     <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg" alt="">
 
                     <img class="myimg" src="https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg" alt="">
@@ -262,19 +248,131 @@
         crossorigin="anonymous"></script>
     <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <script>
         var vm = new Vue({
             el: "#facecompare",
             data: {
-                imglist:[
-                    
+                imglists: [
+                    "https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic28.jpg",
+                    "https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic29.jpg",
+                    "https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic30.jpg",
+                    "https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic37.jpg",
+                    "https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic32.jpg",
+                    "https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic33.jpg",
+                    "https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic34.jpg",
+                    "https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic35.jpg",
+                    "https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic36.jpg",
+                    "https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic37.jpg",
                 ],
+                curimgindex: 0,
+
+                bigimglist: ['', ''],
+                curbigimginx: 0,
+
+                imgurl: '',
+                comparejsondata:'',
+                tmpcurimgtag: 0,
+                compareresult:'',
+            },
+            methods: {
+                clickleftbtn(){
+                    document.getElementsByClassName('img')[0].scrollIntoView();
+                },
+                clickrightbtn(){
+                    document.getElementsByClassName('img')[this.imglists.length-1].scrollIntoView();
+                },
+                clickimglist(index) {
+                    this.curimgindex = index;
+                    this.setbigimg(this.imglists[index])
+
+                },
+                clickbigimg(index) {
+                    this.curbigimginx = index;
+                    this.selectimglisttobigimg()
+                },
+                clickseturl() {
+                    console.log('set img url:', this.imgurl)
+                    this.setbigimg(this.imgurl)
+                    this.selectimglisttobigimg()
+                },
+                selectimglisttobigimg() {
+                    let findinx = -1;
+                    for (let index = 0; index < this.imglists.length; index++) {
+                        const element = this.imglists[index];
+                        if (this.imglists[index] === this.bigimglist[this.curbigimginx]) {
+                            findinx = index
+                            break
+                        }
+                    }
+                    if (findinx != -1) {
+                        document.getElementsByClassName('img')[findinx].scrollIntoView();
+                    }
+                    this.curimgindex = findinx
+                },
+                setbigimg(newimgsrc) {
+                    let temp = this.bigimglist[this.curbigimginx]
+
+                    if (temp === newimgsrc) {
+                        console.log('src == newimgsrc do not set:', temp)
+                        return
+                    }
+
+                    this.bigimglist[this.curbigimginx] = newimgsrc
+
+                    if (0 == temp.indexOf('blob:null')) {
+                        window.URL.revokeObjectURL(temp)
+                        console.log('clear old blob img src', temp)
+                    }
+                    // do the compare  all is file path
+                    this.facecompare()
+                },
+                facecompare() {                    
+                    let tag = ++this.tmpcurimgtag
+
+                    // send axios 
+                    let formdata = new FormData();
+                    formdata.append("api_key", "YHlShnzToe1pqvnTXTYupi5Fst0kMnkC")
+                    formdata.append("api_secret", "fYBk6261SF-NjJUrJjp1-rZBO8p9JJBq")
+                    
+                    //formdata.append("image_url","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555339400025&di=61165fb9d80035d89ad21450ab403966&imgtype=0&src=http%3A%2F%2Fsports.sina.com.cn%2Fn.sinaimg.cn%2Fsports%2Ftransform%2F283%2Fw650h433%2F20190216%2FSt1O-htacqwv8021210.jpg")
+                    formdata.append("image_url1", this.bigimglist[0])
+                    formdata.append("image_url2", this.bigimglist[1])
+                    let config = {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    }
+                    axios.post('https://api-cn.faceplusplus.com/facepp/v3/compare', formdata, config)
+                        .then((res) => {
+                            console.log(res.data)
+                            if (tag != this.tmpcurimgtag) {
+                                console.log('error tag: ', tag, this.tmpcurimgtag)
+                                return
+                            }
+                            this.comparejsondata = res.data
+                            let similar = '完全不像'
+                            if (res.data.confidence > 95) {
+                                similar = '非常相似'
+                            }
+                            else if (res.data.confidence > 80) {
+                                similar = '有点像'
+                            }
+                            this.compareresult = '最后的比分是：' + res.data.confidence + '\n' + similar
+                        })
+                        .catch((err) => {
+                            console.log(tag, this.tmpcurimgtag, err)
+                            alert(err.message)
+                        })
+                },
             },
             mounted() {
-
+                this.bigimglist = [this.imglists[0], this.imglists[this.imglists.length - 2]]
+                this.imgurl = 'https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic18.jpg'
+                this.facecompare()
             },
         })
     </script>
