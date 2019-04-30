@@ -66,8 +66,6 @@ export const constantRoutes = [
       }
     ]
   },
-  // 404 page must be placed at the end !!!
-  { path: "*", redirect: "/404", hidden: true }
 ];
 
 
@@ -76,7 +74,7 @@ export const asyncRoutes = [
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',
-    alwaysShow: false, // will always show the root menu
+    alwaysShow: true, // will always show the root menu
     name: 'Permission',
     meta: {
       title: 'permission',
@@ -90,7 +88,7 @@ export const asyncRoutes = [
         name: 'PagePermission',
         meta: {
           title: 'pagePermission',
-          roles: ['admin'] // or you can only set roles in sub nav
+          //roles: ['admin'] // or you can only set roles in sub nav
         }
       },
       {
@@ -125,6 +123,7 @@ export const asyncRoutes = [
       }
     ]
   },
+  { path: '*', redirect: '/404', hidden: true }
 ]
 
 

@@ -31,7 +31,9 @@
     "mockjs": "^1.0.1-beta3",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.5.21"
+    "vue-template-compiler": "^2.5.21",
+    "svg-sprite-loader": "4.1.3",
+    "svgo": "1.2.0"
   },
   "eslintConfig": {
     "root": true,
