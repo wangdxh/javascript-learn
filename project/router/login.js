@@ -59,7 +59,7 @@ router.get(
 
 //-----------------------------main /login
 router.get("/", (req, res) => {
-  res.send('this is login html, <a href="/login/github">github</a>');
+  res.send('this is login html, <a href="/login/github">github</a>');  
 });
 
 //------------------------------jwt
@@ -80,6 +80,7 @@ router.get("/jwt", (req, res) => {
   console.log(token);
   res.json({ token });
 });
+
 
 let JwtStrategy = passportjwt.Strategy;
 let ExtractJwt = passportjwt.ExtractJwt;
