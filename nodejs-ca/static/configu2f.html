@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>config u2f</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+
+    <style>
+        textarea {
+            width: 100%;
+            height: 400px;
+            resize: none;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+
+    <div class="container w-50 " id="u2ftest">
+        <div class="row mb-3">
+        </div>
+        
+        <div class="row mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">FIDO U2F register</h4>
+                    <img class="card-link" src="./pic/u2freg.png" alt="">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row mb-3">
+            <div class="col-12">
+
+                <center>
+                    <button class="btn btn-info" @click="u2fregister"> 从服务器获取注册申请信息</button>
+                </center>
+
+                <span>req data:</span>
+                <br>
+                <textarea name="" id="" readonly v-text="regreq"></textarea>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12">
+                <center>
+                    <button class="btn btn-info" @click="clientgeneratekeys"> 客户端生成新的公私钥等信息</button>
+                </center>
+                <span>客户端生成key 等信息:</span>
+                <br>
+                <textarea name="" id="" readonly v-text="reqclientgeneratekey"></textarea>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12">
+                <center>
+                    <button class="btn btn-info" @click="u2fendregister"> 完成注册</button>
+                </center>
+                <span>服务器返回的信息
+                    <br>（public key 和 key handler 不需要返回 这里用于调试）:</span>
+                <br>
+                <textarea name="" id="" readonly v-text="regresponse"></textarea>
+            </div>
+        </div>
+
+
+        <div class="row mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">FIDO U2F login</h4>
+                    <img class="card-link" src="./pic/u2flogin.png" alt="">
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12">
+
+                <center>
+                    <button class="btn btn-info" @click="u2fauth"> 从服务器获取某用户的keyhandler</button>
+                </center>
+
+                <span>req data:</span>
+                <br>
+                <textarea name="" id="" readonly v-text="authreq"></textarea>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12">
+                <center>
+                    <button class="btn btn-info" @click="authclientsign"> 客户端对chanlleage进行签名</button>
+                </center>
+                <span>客户端针对本次认证生成的签名信息:</span>
+                <br>
+                <textarea name="" id="" readonly v-text="authclientsignresult"></textarea>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12">
+                <center>
+                    <button class="btn btn-info" @click="u2fendrauth"> 完成认证</button>
+                </center>
+                <span>服务器返回的信息:</span>
+                <br>
+                <textarea name="" id="" readonly v-text="authresponse"></textarea>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./js/u2f-api-polyfill.js"></script>
+
+    <script>        
+
+        /*function u2fauth() {
+            const authRequest = ''  // Retrieve this from hitting the authentication challenge endpoint
+            vm.authreq = authRequest
+            console.log('u2f start sign')
+            window.u2f.sign(authRequest.appId, authRequest.challenge, [authRequest], (authResponse) => {
+                console.log('u2f over sign')
+                // Send this authentication response to the authentication verification server endpoint
+                vm.authresponse = authResponse
+
+            });
+        };*/
+
+        var vm = new Vue({
+            el: '#u2ftest',
+            data: {
+                regreq: 'test',
+                reqclientgeneratekey: 'test2',
+                regresponse: 'test3',
+
+                authreq: 'test4',
+                authclientsignresult: 'test5',
+                authresponse: 'test6',
+            },
+            methods: {
+                u2fregister() {
+                    console.log('u2fregister')
+                    axios.get('/u2f/reg').then((res) => {
+                        //const registrationRequest = res.data.registrationRequest
+                        // Retrieve this from hitting the registration challenge endpoint
+                        this.regreq = res.data
+                    }).catch((err) => {
+                        alert(err)
+                    })
+                },
+                // next
+                clientgeneratekeys() {
+                    alert('please insert u2f key，灯闪烁的时候，用手指触摸卡上的金属区域')
+                    console.log('u2f device over register')
+                    const registrationRequest = this.regreq.registrationRequest
+                    window.u2f.register(registrationRequest.appId, [registrationRequest], [], (registrationResponse) => {
+                        console.log('u2f device over register')
+                        this.reqclientgeneratekey = registrationResponse
+                    });
+                },
+
+                u2fendregister() {
+                    // Send this registration response to the registration verification server endpoint
+                    let registrationResponse = this.reqclientgeneratekey
+                    axios.post('/u2f/reg', { registrationResponse })
+                        .then((res) => {
+                            this.regresponse = res.data
+                            console.log(res.data)
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                            alert(err)
+                        })
+                },
+
+                u2fauth() {
+                    axios.get('/u2f/auth').then((res) => {
+                        //const registrationRequest = res.data.registrationRequest
+                        // Retrieve this from hitting the registration challenge endpoint
+                        this.authreq = res.data
+                    }).catch((err) => {
+                        alert(err)
+                    })
+                },
+                authclientsign() {
+                    alert('please insert u2f key，灯闪烁的时候，用手指触摸卡上的金属区域')
+                    const authRequest = this.authreq.authRequest;
+                    // Retrieve this from hitting the authentication challenge endpoint
+                    window.u2f.sign(authRequest.appId, authRequest.challenge, [authRequest], (authResponse) => {
+                    // Send this authentication response to the authentication verification server endpoint
+                        this.authclientsignresult = authResponse
+                    });
+                },
+                u2fendrauth() {
+                    let authResponse = this.authclientsignresult
+                    axios.post('/u2f/auth', { authResponse })
+                        .then((res) => {
+                            this.authresponse = res.data
+                            console.log(res.data)
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                            alert(err)
+                        })
+                },
+            },
+            mounted() {
+                console.log("ok")
+            },
+        })
+    </script>
+</body>
+
+</html>
