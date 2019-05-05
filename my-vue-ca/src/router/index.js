@@ -92,8 +92,8 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'page',
-        component: () => import('@/views/permission/page'),
+        path: 'basic',
+        component: () => import('@/views/permission/basic'),
         name: 'PagePermission',
         meta: {
           title: '基本命令',
@@ -101,8 +101,8 @@ export const asyncRoutes = [
         }
       },
       {
-        path: 'directive',
-        component: () => import('@/views/permission/directive'),
+        path: 'apply',
+        component: () => import('@/views/permission/apply'),
         name: 'DirectivePermission',
         meta: {
           title: '申请证书'
