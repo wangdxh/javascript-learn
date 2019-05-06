@@ -18,7 +18,7 @@ app.all('*', function(req, res, next) {
   next();
   });
 
-app.use(express.static(__dirname + "/dist"));
+app.use(express.static(__dirname + "/../my-vue-ca/dist"));
 app.use(express.static(__dirname + "/static"));
 
 

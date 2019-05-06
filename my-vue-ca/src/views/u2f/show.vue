@@ -101,7 +101,9 @@
 
 <script>
 import u2fApi from "u2f-api";
-import axios from "axios";
+//import axios from "axios";
+import myaxios from "@/utils/myaxios";
+import utilerr from "@/utils/error";
 
 export default {
   data() {
@@ -118,86 +120,79 @@ export default {
   methods: {
     u2fregister() {
       console.log("u2fregister");
-      axios
+      myaxios
         .get("https://172.16.64.92:4430/u2f/reg")
         .then(res => {
           //const registrationRequest = res.data.registrationRequest
           // Retrieve this from hitting the registration challenge endpoint
-          this.regreq = res.data;
+          this.regreq = res; //res.data;
         })
-        .catch(err => {
-          alert(err);
-        });
+        .catch(utilerr.log);
     },
     // next
     clientgeneratekeys() {
-      alert("please insert u2f key，灯闪烁的时候，用手指触摸卡上的金属区域");
-      console.log("u2f device over register");
-      const registrationRequest = this.regreq.registrationRequest;
-      u2fApi.register(
-        registrationRequest
-      ).then(registrationResponse => {
+      utilerr.alert(
+        "please insert u2f key，灯闪烁的时候，用手指触摸卡上的金属区域",
+        () => {
           console.log("u2f device over register");
-          this.reqclientgeneratekey = registrationResponse;
-        })
-      .catch(err=>{
-          alert(err)
-      });
+          const registrationRequest = this.regreq.registrationRequest;
+          u2fApi
+            .register(registrationRequest)
+            .then(registrationResponse => {
+              console.log("u2f device over register");
+              this.reqclientgeneratekey = registrationResponse;
+            })
+            .catch(utilerr.message);
+        }
+      );
     },
 
     u2fendregister() {
       // Send this registration response to the registration verification server endpoint
       let registrationResponse = this.reqclientgeneratekey;
-      axios
+      myaxios
         .post("https://172.16.64.92:4430/u2f/reg", { registrationResponse })
         .then(res => {
-          this.regresponse = res.data;
-          console.log(res.data);
+          this.regresponse = res; //res.data;
+          console.log(res);
         })
-        .catch(err => {
-          console.log(err);
-          alert(err);
-        });
+        .catch(utilerr.log);
     },
 
     u2fauth() {
-      axios
+      myaxios
         .get("https://172.16.64.92:4430/u2f/auth")
         .then(res => {
           //const registrationRequest = res.data.registrationRequest
           // Retrieve this from hitting the registration challenge endpoint
-          this.authreq = res.data;
+          this.authreq = res; //res.data;
         })
-        .catch(err => {
-          alert(err);
-        });
+        .catch(utilerr.log);
     },
     authclientsign() {
-      alert("please insert u2f key，灯闪烁的时候，用手指触摸卡上的金属区域");
-      const authRequest = this.authreq.authRequest;
-      // Retrieve this from hitting the authentication challenge endpoint
-      u2fApi.sign(
-        authRequest
-      ).then(authResponse => {
-          // Send this authentication response to the authentication verification server endpoint
-          this.authclientsignresult = authResponse;
-        })
-      .catch(err => {
-          alert(err);
-        });
+      utilerr.alert(
+        "please insert u2f key，灯闪烁的时候，用手指触摸卡上的金属区域",
+        () => {
+          const authRequest = this.authreq.authRequest;
+          // Retrieve this from hitting the authentication challenge endpoint
+          u2fApi
+            .sign(authRequest)
+            .then(authResponse => {
+              // Send this authentication response to the authentication verification server endpoint
+              this.authclientsignresult = authResponse;
+            })
+            .catch(utilerr.message);
+        }
+      );
     },
     u2fendrauth() {
       let authResponse = this.authclientsignresult;
-      axios
+      myaxios
         .post("https://172.16.64.92:4430/u2f/auth", { authResponse })
         .then(res => {
-          this.authresponse = res.data;
-          console.log(res.data);
-        })
-        .catch(err => {
-          console.log(err);
-          alert(err);
-        });
+          this.authresponse = res; //res.data;
+          console.log(res);
+        }).catch(utilerr.log);
     }
   },
   mounted() {

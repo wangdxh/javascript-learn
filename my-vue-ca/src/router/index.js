@@ -82,7 +82,7 @@ export const asyncRoutes = [
   {
     path: '/permission',
     component: Layout,
-    redirect: '/permission/page',
+    redirect: '/permission/basic',
     alwaysShow: true, // will always show the root menu
     name: 'Permission',
     meta: {
@@ -128,7 +128,7 @@ export const asyncRoutes = [
     meta: {
       title: 'u2f设备管理',
       icon: 'skill',
-      roles: ['admin'] // you can set roles in root nav
+      roles: ['admin','editor'] // you can set roles in root nav
     },
     children: [
       {
@@ -136,6 +136,37 @@ export const asyncRoutes = [
         component: () => import('@/views/u2f/show'),
         name: 'U2f',
         meta: { title: '设备演示', noCache: false }
+      }
+    ]
+  },
+  {
+    path: '/faces',
+    component: Layout,
+    alwaysShow: true,
+    redirect:'/faces/recog',
+    meta: {
+      title: '人脸相关',
+      icon: 'peoples',
+      roles: ['admin'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'recog',
+        component: () => import('@/views/faces/recognition'),
+        name: 'Recog',
+        meta: { title: '人脸识别', noCache: false }
+      },
+      {
+        path: 'compare',
+        component: () => import('@/views/faces/compare'),
+        name: 'Compare',
+        meta: { title: '人脸比对', noCache: false }
+      },
+      {
+        path: 'camera',
+        component: () => import('@/views/faces/camera'),
+        name: 'Camera',
+        meta: { title: '摄像头', noCache: false }
       }
     ]
   },
