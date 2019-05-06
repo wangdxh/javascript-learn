@@ -18,10 +18,8 @@
     "mysql": "^2.16.0",
     "passport": "^0.4.0",
     "passport-github2": "^0.1.11",
-    "passport-jwt": "^4.0.0",
-    "u2f-api": "^1.0.10"
+    "passport-jwt": "^4.0.0"
   },
   "devDependencies": {
-    "u2f-api-polyfill": "^0.4.4"
   }
 }
