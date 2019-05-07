@@ -5,7 +5,7 @@ import store from '@/store'
 // create an axios instance
 const myaxios = axios.create({
   baseURL: '/', // url = base url + request url
-  withCredentials: true, // send cookies when cross-domain requests
+  withCredentials: false, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
 
