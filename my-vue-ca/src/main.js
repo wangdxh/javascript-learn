@@ -18,6 +18,13 @@ import '@/permission'
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 
+// my define componets
+import imagelist from '@/components/Imagelist'
+Vue.component('imagelist', imagelist)
+import canvasrect from '@/components/Canvasrect'
+Vue.component('canvasrect', canvasrect)
+
+
 Vue.config.productionTip = true;
 
 new Vue({

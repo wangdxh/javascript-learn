@@ -1,34 +1,22 @@
 <template>
     <div style="height:100vh;background-color:black;">
-        <br>
+        <br>        
+
         <el-row>
-            <el-col :span="20" :offset="2">
-                <div class="imageslist">
-                  <button class="imgleftdiv" @click="clickleftbtn">                
-                        <i class="el-icon-arrow-left"></i>
-                  </button>
-
-                    <div class="content" id="imglist">
-                        <img v-for="(item, index) in imglists" :key="index" class="img" :class="curimgindex==index? 'active' : '' " :src="item" @click="clickimglist(index)"
-                            alt="">
-                    </div>                                            
-
-                    <button class="imgrightdiv" @click="clickrightbtn">                
-                      <i class="el-icon-arrow-right"></i>                  
-                    </button>
-                </div>
-
-                
-            </el-col>
-
+          <el-col :span="20" :offset="2">
+            <imagelist :imglists="imglists" @clickitem="clickimglist"></imagelist>
+          </el-col>
         </el-row>
         <br>
 
 
-        <el-row type="flex" justify="center">
-            <el-col :span="10">
-                    <canvas id="mycanvas" width="500px" height="400px"  style="float:right">
-                    </canvas>
+        <el-row>
+            <el-col :span="12" :offset="6">
+                    
+                  <canvasrect :imagesrc="previewimgsrc" :objectlist="objectlist" :curobjectindex="curobjectinx"
+                  style="width:100%;height:400px;">
+              
+                  </canvasrect>
             </el-col>
 
             <el-col :span="4" >
@@ -114,75 +102,6 @@
   white-space: nowrap;
 }
 
-/*----------------------------------*/
-
-.imgleftdiv,
-.imgrightdiv {
-  background-color: #34353d;
-  width: 25px;
-  height: 100px;
-  border: 0px;
-  outline: none;
-}
-.imgleftdiv {
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-  margin-right: 1px;
-}
-
-.imgrightdiv {
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-  margin-left: 1px;
-}
-
-.imageslist {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  height: 120px;
-  justify-content: space-between;
-  align-items: center;
-  /*height:100px;*/
-  background-color: black;
-  /*border: 1px solid gray;*/
-}
-
-.imageslist .img {
-  cursor: pointer;
-  width: 100px;
-  height: 100px;
-  opacity: 0.3;
-  margin-left: 2px;
-  margin-right: 2px;
-}
-
-.imageslist .img:hover {
-  /*opacity: 0.6;*/
-  opacity: 1;
-}
-
-.imageslist .img.active {
-  /*border: 1px solid #1989fa;
-  opacity: 1;*/
-}
-
-.imageslist .content::-webkit-scrollbar {
-  display: none;
-}
-
-.imageslist .content {
-  width: 100%;
-  height: 100px;
-  overflow-x: scroll;
-  overflow-y: auto;
-  white-space: nowrap;
-}
-
-canvas {
-  margin: 3px;
-  border: 1px solid gray;
-}
 </style>
 
 
@@ -205,37 +124,15 @@ export default {
         "https://ors35x6a7.qnssl.com/atshow-face-detection-20170703/9.png?imageslim",
         "https://ors35x6a7.qnssl.com/atshow-face-detection-20170703/10.png?imageslim"
       ],
-      curimgindex: 0,
 
       objectlist: [],
       curobjectinx: 0,
       previewimgsrc: "",
-      imgpreview: null,
-
-      imgwidth: 0,
-      imgheight: 0,
-      tempobjectlist: null,
+      
       tmpcurimgtag: 0
     };
   },
-  methods: {
-    clickleftbtn() {
-      let item = document.getElementById("imglist");
-      let x = item.scrollLeft;
-      x -= 100;
-      x < 0 ? (x = 0) : x;
-
-      item.scrollLeft = x;
-    },
-    clickrightbtn() {
-      let item = document.getElementById("imglist");
-      let x = item.scrollLeft;
-      x += 100;
-      if (x + item.clientWidth > item.scrollWidth) {
-        x = item.scrollWidth - item.clientWidth;
-      }
-      item.scrollLeft = x;
-    },
+  methods: {    
     clickupbtn() {
       let item = document.getElementById("imglist-column");
       let x = item.scrollTop;
@@ -255,46 +152,13 @@ export default {
     },
     selectobject(index) {
       this.curobjectinx = index;
-      this.drawresult();
     },
     clickimglist(index) {
       this.clear();
-
-      this.curimgindex = index;
-      this.imgpreview.onload = this.previewimgloaded;
-      this.imgpreview.src = this.imglists[index];
       this.previewimgsrc = this.imglists[index];
       this.getfaceresult("image_url", this.imglists[index]);
     },
-    previewimgloaded() {
-      this.imgwidth = this.imgpreview.width;
-      this.imgheight = this.imgpreview.height;
-      console.log("img loaded", this, this.imgwidth);
-      this.dealobjects(this.tmpcurimgtag);
-    },
-    dealobjects(tag) {
-      if (
-        tag == this.tmpcurimgtag &&
-        this.tempobjectlist &&
-        this.imgwidth &&
-        this.imgheight
-      ) {
-        this.curobjectinx = 0;
-        this.objectlist = [];
-        // imgwidth and imgheight have got
-        for (let inx = 0; inx < this.tempobjectlist.faces.length; inx++) {
-          const item = this.tempobjectlist.faces[inx];          
-          this.objectlist.push({
-            left: item.face_rectangle.left,
-            top: item.face_rectangle.top,
-            width: item.face_rectangle.width,
-            height: item.face_rectangle.height
-          });
-        }
-        this.tempobjectlist = null;
-      }
-      this.drawresult();
-    },
+    
     getfaceresult(url, urldata) {
       let tag = ++this.tmpcurimgtag;
 
@@ -321,67 +185,26 @@ export default {
             console.log("error tag: ", tag, this.tmpcurimgtag);
             return;
           }
-          this.tempobjectlist = res;
-          this.dealobjects(tag);
+
+          this.clear()
+          // imgwidth and imgheight have got
+          for (let inx = 0; inx < res.faces.length; inx++) {
+            const item = res.faces[inx];          
+            this.objectlist.push({
+              left: item.face_rectangle.left,
+              top: item.face_rectangle.top,
+              width: item.face_rectangle.width,
+              height: item.face_rectangle.height
+            });
+          }
+
         });
     },
     clear() {
       this.objectlist = [];
-      this.tempobjectlist = null;
-      this.imgwidth = 0;
-      this.imgheight = 0;
       this.curobjectinx = 0;
     },
-    drawresult() {
-      if (this.imgwidth && this.imgheight) {
-        let canvas = document.getElementById("mycanvas");
-        let ctx = canvas.getContext("2d");
-        let dstwidth = canvas.width;
-        let dstheight = canvas.height;
-        ctx.clearRect(0, 0, dstwidth, dstheight);
-
-        let xscale = dstwidth / this.imgwidth;
-        let yscale = dstheight / this.imgheight;
-        let scale = xscale > yscale ? yscale : xscale;
-        if (xscale > 1 && yscale > 1) {
-          scale = 1;
-        }
-        let xmargin = parseInt((dstwidth - this.imgwidth * scale) / 2);
-        let ymargin = parseInt((dstheight - this.imgheight * scale) / 2);
-
-        ctx.drawImage(
-          this.imgpreview,
-          0,
-          0,
-          this.imgwidth,
-          this.imgheight,
-          xmargin,
-          ymargin,
-          parseInt(this.imgwidth * scale),
-          parseInt(this.imgheight * scale)
-        );
-
-        if (this.objectlist.length > 0) {
-          for (let index = 0; index < this.objectlist.length; index++) {
-            const element = this.objectlist[index];
-            let x = xmargin + parseInt(element.left * scale);
-            let y = ymargin + parseInt(element.top * scale);
-            let w = parseInt(element.width * scale);
-            let h = parseInt(element.height * scale);
-            ctx.lineWidth = 2;
-            if (this.objectlist.length > 1 && this.curobjectinx == index) {
-              ctx.lineWidth = 4;
-            }
-            ctx.strokeStyle = "#1989fa";
-            console.log(x, y, w, h);
-            ctx.strokeRect(x, y, w, h);
-          }
-        }
-        /*ctx.strokeRect();
-        context.lineWidth = 1;
-        context.strokeStyle = "#333";*/
-      }
-    },
+    
     objectimgstyle(index) {
       
       let item = this.objectlist[index];
@@ -392,7 +215,6 @@ export default {
     }
   },
   mounted() {
-    this.imgpreview = new Image();
     this.clickimglist(0);
   }
 };
