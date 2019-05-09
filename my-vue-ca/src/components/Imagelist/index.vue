@@ -5,8 +5,9 @@
       </button>
 
         <div class="content" ref="imglist">
-            <img v-for="(item, index) in imglists" :key="index" class="img" :class="curimgindex==index? 'active' : '' " :src="item" @click="clickitem(index)"
-                alt="">
+            <img v-for="(item, index) in imglists" :key="index" class="img"
+                 :class="curimgindex==index? 'active' : '' " :src="item" @click="clickitem(index)"
+                 alt="" ref="imgitem">
         </div>                                            
 
         <button class="imgrightdiv" @click="clickrightbtn">                
@@ -17,7 +18,7 @@
 
 <script>
 export default {
-  name: 'Imagelist',
+  name: "Imagelist",
   props: {
     hasactive: {
       type: Boolean,
@@ -25,22 +26,22 @@ export default {
     },
     imglists: {
       type: Array,
-      require: true,
-    },
+      require: true
+    }
   },
   data() {
     return {
-      curimgindex:0,
-    }
-  },  
-  methods: {    
+      curimgindex: 0
+    };
+  },
+  methods: {
     clickitem(index) {
-      this.curimgindex = index
-      console.log('in child click', index)
-      this.$emit('clickitem', index)
+      this.curimgindex = index;
+      console.log("in child click", index);
+      this.$emit("clickitem", index);
     },
     clickleftbtn() {
-      let item = this.$refs.imglist
+      let item = this.$refs.imglist;
       let x = item.scrollLeft;
       x -= 100;
       x < 0 ? (x = 0) : x;
@@ -48,7 +49,7 @@ export default {
       item.scrollLeft = x;
     },
     clickrightbtn() {
-      let item = this.$refs.imglist
+      let item = this.$refs.imglist;
       let x = item.scrollLeft;
       x += 100;
       if (x + item.clientWidth > item.scrollWidth) {
@@ -56,11 +57,25 @@ export default {
       }
       item.scrollLeft = x;
     },
-    selectitem(index){
-      this.curimgindex = index
+    selectitembyinx(index) {
+      this.curimgindex = index;
+    },
+    selectitem(item) {
+      let findinx = -1;
+      for (let index = 0; index < this.imglists.length; index++) {
+        if (this.imglists[index] === item) {
+          findinx = index;
+          break;
+        }
+      }
+      if (findinx != -1) {
+        this.$refs.imgitem[findinx].scrollIntoView()
+        //document.getElementsByClassName("img")[findinx].scrollIntoView();
+      }
+      this.curimgindex = findinx;
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -119,12 +134,13 @@ export default {
   display: none;
 }
 
+
 .imageslist .content {
   width: 100%;
   height: 104px;
   overflow-x: scroll;
   /*overflow-y: auto;*/
   white-space: nowrap;
+  -ms-overflow-style: none;  
 }
-
 </style>

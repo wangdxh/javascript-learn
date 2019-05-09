@@ -1,6 +1,6 @@
 <template>
   <div ref="baba">
-    <canvas ref="mycanvas"  @click="clickitem">
+    <canvas ref="mycanvas"  @click="clickitem" :class="isactive ? 'active' : ''">
 
     </canvas>
   </div>
@@ -15,7 +15,8 @@ export default {
     return {
       imgpreview: null,
       imgwidth: 0,
-      imgheight: 0
+      imgheight: 0,
+      ro: null
     };
   },
   props: {
@@ -34,17 +35,18 @@ export default {
       type: Number,
       default: -1
     },
-    width: {
-      type: Number,
-      default: 500
-    },
-    height: {
-      type: Number,
-      default: 400
+    isactive: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
     imagesrc(newValue, oldValue) {
+      if (0 == oldValue.indexOf("blob:null")) {
+        window.URL.revokeObjectURL(oldValue);
+        console.log("clear old blob img src", oldValue);
+      }
+
       // draw new
       this.imgwidth = 0;
       this.imgheight = 0;
@@ -66,7 +68,7 @@ export default {
     previewimgloaded() {
       this.imgwidth = this.imgpreview.width;
       this.imgheight = this.imgpreview.height;
-      console.log("img loaded", this, this.imgwidth);
+      console.log("img loaded:", this.imagesrc, this.imgwidth, this.imgheight);
       this.redraw();
     },
     clickitem() {
@@ -121,7 +123,7 @@ export default {
           }
         }
       }
-    },
+    }
   },
   mounted() {
     this.imgpreview = new Image();
@@ -135,16 +137,16 @@ export default {
     this.$refs.mycanvas.height =
       this.$refs.mycanvas.parentNode.clientHeight || 150;
 
-    const ro = new ResizeObserver((entries, observer) => {
+    this.ro = new ResizeObserver((entries, observer) => {
       for (const entry of entries) {
         const { left, top, width, height } = entry.contentRect;
         if ("DIV" == entry.target.nodeName) {
           if (this.$refs.mycanvas) {
-            console.log(width, height, entry.target)
+            console.log(width, height, entry.target);
             //alert(`width ${width} height ${height} ${entry.contentRect}` )
             this.$refs.mycanvas.width = width || 300; //this.$props.width
             this.$refs.mycanvas.height = height || 150;
-            this.$nextTick(this.redraw);  
+            this.$nextTick(this.redraw);
           }
         }
         /*console.log(`Element's size: ${width}px x ${height}px`);
@@ -152,8 +154,12 @@ export default {
       }
     });
 
-    ro.observe(this.$refs.baba);
-
+    this.ro.observe(this.$refs.baba);
+  },
+  beforeDestroy() {
+    if (this.ro) {
+      this.ro.unobserve(this.$refs.baba);
+    }
   }
 };
 </script>
@@ -162,5 +168,9 @@ export default {
 canvas {
   /*margin: 3px;*/
   border: 1px solid gray;
+}
+
+canvas.active {
+  border: 2px solid #1989fa;
 }
 </style>
