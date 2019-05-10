@@ -2,7 +2,7 @@
     <div>
         <h3>dashboard</h3>
         <br>
-        <div style="width=100%;height:400px">
+        <div style="width=100%;height:70vh">
                  
             <el-amap
                 ref="map"
@@ -41,7 +41,32 @@
 </template>
 
 <script>
+// 高德
+// 引入vue-amap
+import VueAMap from "vue-amap";
+//Vue.use(VueAMap);
+
 export default {
+  created() {
+    // 初始化vue-amap
+    VueAMap.initAMapApiLoader({
+      // 高德的key
+      key: "160cab8ad6c50752175d76e61ef92c50",
+      // 插件集合
+      plugin: [
+        "AMap.Autocomplete",
+        "AMap.PlaceSearch",
+        "AMap.Scale",
+        "AMap.OverView",
+        "AMap.ToolBar",
+        "AMap.MapType",
+        "AMap.PolyEditor",
+        "AMap.CircleEditor"
+      ],
+      // 高德 sdk 版本，默认为 1.4.4
+      v: "1.4.4"
+    });
+  },
   data() {
     return {
       zoom: 10,
@@ -74,8 +99,7 @@ export default {
             }
           }
         }
-      ],
-
+      ]
     };
   }
 };
