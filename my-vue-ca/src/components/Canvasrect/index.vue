@@ -160,6 +160,7 @@ export default {
     if (this.ro) {
       this.ro.unobserve(this.$refs.baba);
     }
+    this.imgpreview = null
   }
 };
 </script>

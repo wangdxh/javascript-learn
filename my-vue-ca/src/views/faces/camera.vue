@@ -2,12 +2,8 @@
     <div style="height:100vh;background-color:black;">
         <br>
         <el-row :gutter="20">
-            <el-col :span="10" :offset="2">
-              <div ref="videobaba" style="width:100%;height:320px">
-                <video ref="myvideo" playsinline controls
-                       style="border:1px solid gray">
-                </video>
-              </div>
+            <el-col :span="10" :offset="2">              
+              <cameravideo ref="camera" style="width:100%;height:320px"> </cameravideo>
             </el-col>            
 
             <el-col :span="10">
@@ -54,95 +50,26 @@
 import myaxios from "@/utils/myaxios";
 import ResizeObserver from "resize-observer-polyfill";
 
-function getUserMedia(constraints, success, error) {
-  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    //最新的标准API
-    navigator.mediaDevices
-      .getUserMedia(constraints)
-      .then(success)
-      .catch(error);
-  } else if (navigator.webkitGetUserMedia) {
-    //webkit核心浏览器
-    navigator.webkitGetUserMedia(constraints, success, error);
-  } else if (navigator.mozGetUserMedia) {
-    //firfox浏览器
-    navigator.mozGetUserMedia(constraints, success, error);
-  } else if (navigator.getUserMedia) {
-    //旧版API
-    navigator.getUserMedia(constraints, success, error);
-  }
-}
 
 export default {
   data() {
     return {
       imagesrc: "",
-      objectlist: [],
-      localstream: null,
+      objectlist: [],      
       tmpcurimgtag: 0,
-      resulttext:'\n\n\n\n',
-      ro:null,
+      resulttext:'\n\n\n\n',      
     };
   },
   methods: {
     opencamera() {
-      if (this.localstream) {
-        return;
-      }
-      console.log(navigator.mediaDevices, navigator);
-      if (
-        (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) ||
-        navigator.getUserMedia ||
-        navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia
-      ) {
-        //调用用户媒体设备, 访问摄像头
-        getUserMedia(
-          {
-            video: {
-              /*width: 320, height: 480, environment*/ facingMode: "user"
-            },
-            audio: false
-          },
-          this.success,
-          this.error
-        );
-      } else {
-        this.$alert("破电脑不支持摄像头", "kedacom");
-      }
+      this.$refs.camera.opencamera()
     },
-    closecamera() {
-      let video = this.$refs.myvideo;
-      video.pause();
-      video.srcObject = null;
-
-      if (this.localstream) {
-        console.log(this.localstream, this.localstream.getTracks().length);
-        this.localstream.getTracks().forEach(element => {
-          element.stop();
-        });
-        this.localstream = null;
-      }
-    },
-    success(stream) {
-      //将视频流设置为video元素的源
-      console.log(stream);
-      this.localstream = stream;
-      let video = this.$refs.myvideo;
-      video.srcObject = stream;
-      video.play();
-      console.log(video);
-    },
-    error(error) {
-      this.$alert(`访问摄像头失败: ${error.name}, ${error.message}`, "kedacom");
+    closecamera(){
+      this.$refs.camera.closecamera()
     },
     screenshot() {
-      // 小技巧
-      let canvas = document.getElementsByTagName("canvas")[0];
-      canvas
-        .getContext("2d")
-        .drawImage(this.$refs.myvideo, 0, 0, canvas.width, canvas.height);
-      canvas.toBlob(this.blobcallback, "image/jpeg", 0.95);
+      //canvas.toBlob(this.blobcallback, "image/jpeg", 0.95);
+      this.$refs.camera.getvideoblob(this.blobcallback);
     },
     blobcallback(blob) {
       this.imagesrc = window.URL.createObjectURL(blob);
@@ -197,33 +124,10 @@ export default {
     }
   },
   mounted() {
-    // very ok
-    this.$refs.myvideo.width =
-      this.$refs.myvideo.parentNode.clientWidth || 300; //this.$props.width
-    this.$refs.myvideo.height =
-      this.$refs.myvideo.parentNode.clientHeight || 150;
-
-    this.ro = new ResizeObserver((entries, observer) => {
-      for (const entry of entries) {
-        const { left, top, width, height } = entry.contentRect;
-        if ("DIV" == entry.target.nodeName) {
-          if (this.$refs.myvideo) {
-            console.log(width, height, entry.target)
-            //alert(`width ${width} height ${height} ${entry.contentRect}` )
-            this.$refs.myvideo.width = width || 300; //this.$props.width
-            this.$refs.myvideo.height = height || 150;            
-          }
-        }
-        /*console.log(`Element's size: ${width}px x ${height}px`);
-        console.log(`Element's paddings: ${top}px ; ${left}px`);*/
-      }
-    });
-
-    this.ro.observe(this.$refs.videobaba);
+    
   },
 
-  beforeDestroy() {
-    this.ro.unobserve(this.$refs.videobaba);
+  beforeDestroy() {    
     this.closecamera();
   }
 };

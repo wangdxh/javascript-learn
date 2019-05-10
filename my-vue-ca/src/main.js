@@ -23,6 +23,8 @@ import imagelist from '@/components/Imagelist'
 Vue.component('imagelist', imagelist)
 import canvasrect from '@/components/Canvasrect'
 Vue.component('canvasrect', canvasrect)
+import cameravideo from '@/components/Cameravideo'
+Vue.component('cameravideo', cameravideo)
 
 
 Vue.config.productionTip = true;
