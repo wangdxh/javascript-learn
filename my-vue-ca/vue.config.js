@@ -7,7 +7,7 @@ function resolve(dir) {
 const port = 9528 // dev port
 
 module.exports = {
-
+  productionSourceMap:  process.env.NODE_ENV==='production'? false : true,
     devServer: {
         port: port,
         open: true,

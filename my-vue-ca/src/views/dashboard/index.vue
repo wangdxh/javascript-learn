@@ -12,7 +12,7 @@
                 <!-- 在地图上标记点 -->
                 <el-amap-marker
                 v-for="(marker,index) in markers"
-                :key="index"
+                :key="'marker'+index"
                 :position="marker" >
                 </el-amap-marker>
                 <!-- 坐标点 -->
@@ -21,7 +21,7 @@
                 <!-- 放置图片 -->
                 <el-amap-ground-image v-for="(groundimage,index) in groundimages"
                 :url="groundimage.url"
-                :key="index"
+                :key="'img'+index"
                 :bounds="groundimage.bounds"
                 :events="groundimage.events">
                 </el-amap-ground-image>
